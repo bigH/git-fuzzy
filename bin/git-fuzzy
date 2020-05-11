@@ -1,0 +1,134 @@
+#!/usr/bin/env bash
+
+# NB: get the absolute path to the directory containing this script
+# https://stackoverflow.com/a/246128
+
+script_source="${BASH_SOURCE[0]}"
+
+while [ -h "$script_source" ]; do
+  target="$(readlink "$script_source")"
+  if [[ $target == /* ]]; then
+    script_source="$target"
+  else
+    script_dir="$( dirname "$script_source" )"
+    script_source="$script_dir/$target"
+  fi
+done
+
+script_dir="$( cd -P "$( dirname "$script_source" )" >/dev/null 2>&1 && pwd )"
+
+# NB: all sourcing happens here.
+# -----------------------------------------
+lib_dir="$script_dir/../lib"
+
+. "$lib_dir/load-configs.sh"
+
+. "$lib_dir/snapshot.sh"
+
+. "$lib_dir/utils.sh"
+
+. "$lib_dir/debug.sh"
+. "$lib_dir/core.sh"
+
+. "$lib_dir/modules/main.sh"
+
+. "$lib_dir/modules/branch.sh"
+. "$lib_dir/modules/diff-checkout.sh"
+. "$lib_dir/modules/diff-direct.sh"
+. "$lib_dir/modules/diff.sh"
+. "$lib_dir/modules/log.sh"
+. "$lib_dir/modules/reflog.sh"
+. "$lib_dir/modules/status.sh"
+
+. "$lib_dir/modules/hub/pr.sh"
+
+. "$lib_dir/modules/helpers.sh"
+# -----------------------------------------
+
+# -- Invariants --
+
+if ! type git >/dev/null 2>&1; then
+  # shellcheck disable=2016
+  gf_log_error '`git` not found; it is required for `git fuzzy` to work.'
+  exit 1
+fi
+
+if ! gf_is_in_git_repo; then
+  gf_log_error "not in git repo"
+  exit 1
+fi
+
+if ! type fzf >/dev/null 2>&1; then
+  # shellcheck disable=2016
+  gf_log_error '`fzf` not found; it is required for `git fuzzy` to work.'
+  exit 1
+fi
+
+FZF_VERSION="$(fzf --version)"
+MIN_FZF_VERSION="0.20.0"
+if [ "$FZF_VERSION" = "$(echo -e "$FZF_VERSION\n$MIN_FZF_VERSION" | sort -V | head -n1)" ]; then
+  # shellcheck disable=2016
+  gf_log_warning '`fzf` is too old and may not work properly'
+fi
+
+# NB: checking for actually _unset_
+# shellcheck disable=2016
+if [ -z "${HUB_AVAILABLE+X}" ]; then
+  if type hub >/dev/null 2>&1; then
+    export HUB_AVAILABLE="YES"
+    export GIT_CMD="hub"
+    gf_log_debug '`hub` found, enabling GitHub support.'
+  else
+    export HUB_AVAILABLE=""
+    export GIT_CMD="git"
+    gf_log_debug '`hub` not found, enabling GitHub support.'
+  fi
+fi
+
+gf_run() {
+  COMMAND="$1"
+  shift
+  if [ "$COMMAND" = 'helper' ]; then
+    SUB_COMMAND="$1"
+    shift
+    FUNC="gf_${COMMAND}_${SUB_COMMAND}"
+    PARAMETERS_QUOTED="$(quote_params "$@")"
+    if type "$FUNC" >/dev/null 2>&1; then
+      gf_log_internal "$FUNC" "$@"
+      eval "$FUNC $PARAMETERS_QUOTED"
+    else
+      gf_log_error "\`$COMMAND\` named \`${SUB_COMMAND}\` not found"
+    fi
+  else
+    FORCE_INTERACTIVE=""
+    if [ "$COMMAND" = 'interactive' ]; then
+      COMMAND="$1"
+      FORCE_INTERACTIVE="YES"
+      shift
+    fi
+
+    PARAMETERS_QUOTED="$(quote_params "$@")"
+    INTERACTIVE_FUNC="gf_${COMMAND}"
+    NON_INTERACTIVE_FUNC="gf_${COMMAND}_direct"
+
+    if [ -z "$FORCE_INTERACTIVE" ] && type "$NON_INTERACTIVE_FUNC" >/dev/null 2>&1; then
+      gf_log_internal "$NON_INTERACTIVE_FUNC" "$@"
+      eval "$NON_INTERACTIVE_FUNC $PARAMETERS_QUOTED"
+    elif type "$INTERACTIVE_FUNC" >/dev/null 2>&1; then
+      gf_log_internal "$INTERACTIVE_FUNC" "$@"
+      eval "$INTERACTIVE_FUNC $PARAMETERS_QUOTED"
+    else
+      gf_log_error "\`$COMMAND\` not found"
+    fi
+  fi
+}
+
+git_fuzzy() {
+  if [ "$#" = '0' ]; then
+    gf_menu
+  else
+    gf_run "$@"
+  fi
+}
+
+git_fuzzy "$@"
