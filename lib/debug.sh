@@ -14,7 +14,7 @@ if [ -z "$GF_LOG_LOCATION" ]; then
   fi
   export GF_LOG_LOCATION
 
-  rm "$GF_LOG_LOCATION"
+  rm -f "$GF_LOG_LOCATION"
   touch "$GF_LOG_LOCATION"
 
   trap gf_emit_log_and_reset EXIT
