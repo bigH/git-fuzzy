@@ -16,6 +16,11 @@ Search the log and corresponding diff at once. Notice that when you use `|` the 
 
 ## Installing
 
+`fzf` is **required**:
+```bash
+brew install fzf
+```
+
 If you're running `zsh`, for example:
 ```bash
 git clone https://github.com/bigH/git-fuzzy.git
