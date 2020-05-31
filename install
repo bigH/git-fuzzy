@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+
+PREFIX=${1:-/usr/local}
+
+mkdir -p "$PREFIX/lib/git-fuzzy"
+/bin/cp -f -t "$PREFIX/lib/git-fuzzy" -r lib/*
+
+mkdir -p "$PREFIX/bin"
+# change lib_dir="..." to $PREFIX/lib/git-fuzzy
+sed -- 's!^\(lib_dir=\).*$!\1"'$PREFIX'/lib/git-fuzzy"!' \
+  bin/git-fuzzy >"$PREFIX/bin/git-fuzzy"
+chmod +x "$PREFIX/bin/git-fuzzy"

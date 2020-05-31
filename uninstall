@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+PREFIX=${1:-/usr/local}
+
+rm -rf "$PREFIX/lib/git-fuzzy"
+rm -f "$PREFIX/bin/git-fuzzy"
