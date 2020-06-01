@@ -81,7 +81,7 @@ if [ -z "${HUB_AVAILABLE+X}" ]; then
   else
     export HUB_AVAILABLE=""
     export GIT_CMD="git"
-    gf_log_debug '`hub` not found, enabling GitHub support.'
+    gf_log_debug '`hub` not found, disabling GitHub support.'
   fi
 fi
 
