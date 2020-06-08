@@ -21,8 +21,20 @@ Search the log and corresponding diff at once. Notice that when you use `|` the 
 brew install fzf
 ```
 
-If you're running `zsh`, for example:
+To install `git-fuzzy`:
+
+If you're running `bash`:
 ```bash
+# In the directory of your choosing
+git clone https://github.com/bigH/git-fuzzy.git
+
+# add the executable to your path
+echo "export PATH=\"$(pwd)/git-fuzzy/bin:\$PATH\"" >> ~/.bash_profile
+```
+
+If you're running `zsh`:
+```bash
+# In the directory of your choosing
 git clone https://github.com/bigH/git-fuzzy.git
 
 # add the executable to your path
