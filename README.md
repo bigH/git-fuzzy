@@ -29,6 +29,14 @@ git clone https://github.com/bigH/git-fuzzy.git
 echo "export PATH=\"$(pwd)/git-fuzzy/bin:\$PATH\"" >> ~/.zshrc
 ```
 
+### Fish
+```
+git clone https://github.com/bigH/git-fuzzy.git
+
+# add the executable to your path
+echo "set -x PATH (pwd)\"/git-fuzzy/bin:\$PATH\"" >> ~/.config/fish/config.fish
+```
+
 ### Antibody
 Update your `.zshrc` file with the following line:
 ```
