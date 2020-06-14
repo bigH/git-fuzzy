@@ -69,7 +69,7 @@ if [ -z "$GF_BASE_REMOTE" ]; then
 fi
 
 if [ -z "$GF_BASE_BRANCH" ]; then
-  GF_BASE_BRANCH="$(git symbolic-ref "refs/remotes/${GF_BASE_REMOTE}/HEAD" | sed "s@^refs/remotes/${GF_BASE_REMOTE}/@@")"
+  GF_BASE_BRANCH="$(git symbolic-ref -q "refs/remotes/${GF_BASE_REMOTE}/HEAD" || echo -n "master" | sed "s@^refs/remotes/${GF_BASE_REMOTE}/@@")"
   export GF_BASE_BRANCH
 fi
 
