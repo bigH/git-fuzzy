@@ -1,13 +1,19 @@
 #!/usr/bin/env bash
 # shellcheck disable=2016
 
+GIT_FUZZY_STATUS_ADD_KEY=${GIT_FUZZY_STATUS_ADD_KEY:-Alt-S}
+GIT_FUZZY_STATUS_EDIT_KEY=${GIT_FUZZY_STATUS_EDIT_KEY:-Alt-E}
+GIT_FUZZY_STATUS_COMMIT_KEY=${GIT_FUZZY_STATUS_EDIT_KEY:-Alt-C}
+GIT_FUZZY_STATUS_RESET_KEY=${GIT_FUZZY_STATUS_RESET_KEY:-Alt-R}
+GIT_FUZZY_STATUS_DISCARD_KEY=${GIT_FUZZY_STATUS_DISCARD_KEY:-Alt-U}
+
 GF_STATUS_HEADER='
 Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
 
   '"${GRAY}-- (${NORMAL}*${GRAY}) editor: ${MAGENTA}${EDITOR} ${NORMAL}${GF_EDITOR_ARGS}${NORMAL}"'
-  '"                                      * ${GREEN}${BOLD}edit ✎${NORMAL}  ${WHITE}Alt-E${NORMAL}"'
-   '"${GREEN}all ☑${NORMAL}  ${WHITE}Alt-A${NORMAL}     ${GREEN}stage ${BOLD}⇡${NORMAL}  ${WHITE}Alt-S${NORMAL}     ${RED}${BOLD}discard ✗${NORMAL}  ${WHITE}Alt-U${NORMAL}"'
-  '"${GREEN}none ☐${NORMAL}  ${WHITE}Alt-D${NORMAL}     ${GREEN}reset ${RED}${BOLD}⇣${NORMAL}  ${WHITE}Alt-R${NORMAL}    * ${RED}${BOLD}commit ${NORMAL}${RED}⇧${NORMAL}  ${WHITE}Alt-C${NORMAL}"'
+  '"                                      * ${GREEN}${BOLD}edit ✎${NORMAL}  ${WHITE}$GIT_FUZZY_STATUS_EDIT_KEY${NORMAL}"'
+   '"${GREEN}all ☑${NORMAL}  ${WHITE}Alt-A${NORMAL}     ${GREEN}stage ${BOLD}⇡${NORMAL}  ${WHITE}$GIT_FUZZY_STATUS_ADD_KEY${NORMAL}     ${RED}${BOLD}discard ✗${NORMAL}  ${WHITE}$GIT_FUZZY_STATUS_DISCARD_KEY${NORMAL}"'
+  '"${GREEN}none ☐${NORMAL}  ${WHITE}Alt-D${NORMAL}     ${GREEN}reset ${RED}${BOLD}⇣${NORMAL}  ${WHITE}$GIT_FUZZY_STATUS_RESET_KEY${NORMAL}    * ${RED}${BOLD}commit ${NORMAL}${RED}⇧${NORMAL}  ${WHITE}$GIT_FUZZY_STATUS_COMMIT_KEY${NORMAL}"'
 
 '
 gf_fzf_status() {
@@ -16,21 +22,21 @@ gf_fzf_status() {
 
   gf_fzf -m --header "$GF_STATUS_HEADER" \
             --header-lines=2 \
-            --expect='alt-e,alt-c' \
+            --expect='$GIT_FUZZY_STATUS_EDIT_KEY,$GIT_FUZZY_STATUS_COMMIT_KEY' \
             --nth=2 \
             --preview 'git fuzzy helper status_preview_content {1} {2..}' \
-            --bind "alt-s:execute-silent(git fuzzy helper status_add {+2..})+down+$RELOAD" \
-            --bind "alt-r:execute-silent(git fuzzy helper status_reset {+2..})+down+$RELOAD" \
-            --bind "alt-u:execute-silent(git fuzzy helper status_discard {2..})+$RELOAD"
+            --bind "$GIT_FUZZY_STATUS_ADD_KEY:execute-silent(git fuzzy helper status_add {+2..})+down+$RELOAD" \
+            --bind "$GIT_FUZZY_STATUS_RESET_KEY:execute-silent(git fuzzy helper status_reset {+2..})+down+$RELOAD" \
+            --bind "$GIT_FUZZY_STATUS_DISCARD_KEY:execute-silent(git fuzzy helper status_discard {2..})+$RELOAD"
 }
 
 gf_status_interpreter() {
   CONTENT="$(cat -)"
   HEAD="$(echo "$CONTENT" | head -n1)"
   TAIL="$(echo "$CONTENT" | tail -n +2)"
-  if [ "$HEAD" = 'alt-e' ]; then
+  if [ "$HEAD" = "$GIT_FUZZY_STATUS_EDIT_KEY" ]; then
     eval "git fuzzy helper status_edit $(echo "$TAIL" | cut -c4- | join_lines_quoted)"
-  elif [ "$HEAD" = 'alt-c' ]; then
+  elif [ "$HEAD" = "$GIT_FUZZY_STATUS_COMMIT_KEY" ]; then
     eval "git fuzzy helper status_commit"
   else
     echo "$TAIL" | cut -c4-
