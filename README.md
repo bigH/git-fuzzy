@@ -21,12 +21,26 @@ Search the log and corresponding diff at once. Notice that when you use `|` the 
 brew install fzf
 ```
 
-If you're running `zsh`, for example:
+### ZSH
 ```bash
 git clone https://github.com/bigH/git-fuzzy.git
 
 # add the executable to your path
 echo "export PATH=\"$(pwd)/git-fuzzy/bin:\$PATH\"" >> ~/.zshrc
+```
+
+### Fish
+```
+git clone https://github.com/bigH/git-fuzzy.git
+
+# add the executable to your path
+echo "set -x PATH (pwd)\"/git-fuzzy/bin:\$PATH\"" >> ~/.config/fish/config.fish
+```
+
+### Antibody
+Update your `.zshrc` file with the following line:
+```
+antibody bundle bigH/git-fuzzy path:bin kind:path
 ```
 
 ## Usage
