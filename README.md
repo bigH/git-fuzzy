@@ -21,6 +21,14 @@ Search the log and corresponding diff at once. Notice that when you use `|` the 
 brew install fzf
 ```
 
+### Bash
+```bash
+git clone https://github.com/bigH/git-fuzzy.git
+
+# add the executable to your path
+echo "export PATH=\"$(pwd)/git-fuzzy/bin:\$PATH\"" >> ~/.bashrc
+```
+
 ### ZSH
 ```bash
 git clone https://github.com/bigH/git-fuzzy.git
