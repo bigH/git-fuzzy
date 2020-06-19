@@ -71,4 +71,7 @@ gf_helper_status_edit() {
 gf_helper_status_commit() {
   # shellcheck disable=2086
   gf_interactive_command_logged git commit
+  if [ -n "$(git status -s)" ]; then
+    gf_interactive_command_logged git fuzzy status
+  fi
 }
