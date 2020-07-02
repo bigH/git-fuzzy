@@ -73,6 +73,10 @@ Simply install and run `git fuzzy` and you can begin using the menu.
 
     Look for entries in `git reflog`. Typing in the search simply filters in the usual `fzf` style.
 
+- `git fuzzy stash` (or `git fuzzy` -> `stash`)
+
+    Look for entries in `git stash`. Typing in the search simply filters in the usual `fzf` style.
+
 - `git fuzzy diff` (or `git fuzzy` -> `diff`)
 
     Interactively select diff subjects. Drilling down enables searching through diff contents in a diff browser.
