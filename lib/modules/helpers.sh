@@ -9,5 +9,6 @@
 . "$lib_dir/modules/helpers/log.sh"
 . "$lib_dir/modules/helpers/reflog.sh"
 . "$lib_dir/modules/helpers/status.sh"
+. "$lib_dir/modules/helpers/stash.sh"
 
 . "$lib_dir/modules/helpers/hub/pr.sh"

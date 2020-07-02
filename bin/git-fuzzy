@@ -39,6 +39,7 @@ lib_dir="$script_dir/../lib"
 . "$lib_dir/modules/log.sh"
 . "$lib_dir/modules/reflog.sh"
 . "$lib_dir/modules/status.sh"
+. "$lib_dir/modules/stash.sh"
 
 . "$lib_dir/modules/hub/pr.sh"
 
