@@ -13,11 +13,9 @@ GF_STASH_HEADER='
 gf_fzf_stash() {
   # shellcheck disable=2016
   gf_fzf_one -m \
-    --phony \
-    --header-lines=0 \
+    --header-lines=2 \
     --header "$GF_STASH_HEADER" \
     --preview 'git fuzzy helper stash_preview_content {1} {q}' \
-    --bind 'change:reload(git fuzzy helper stash_menu_content {q})' \
     --bind $GIT_FUZZY_DROP_KEY':execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content {q})'
 }
 

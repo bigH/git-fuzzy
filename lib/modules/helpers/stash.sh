@@ -1,7 +1,17 @@
 #!/usr/bin/env bash
 
 gf_helper_stash_menu_content() {
-  git stash list
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
+  # shellcheck disable=2046
+  printf "%s " "git stash list"
+  if [ -n "$1" ]; then
+    printf "%s" "| grep " "$(quote_params "$@")"
+    printf "%s\n\n" "$NORMAL"
+    git stash list | grep $1
+  else
+    printf "%s\n\n" "$NORMAL"
+    git stash list
+  fi
 }
 
 gf_helper_stash_preview_content() {
