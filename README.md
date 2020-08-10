@@ -171,6 +171,12 @@ export GF_HORIZONTAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - (7000 / 
 export GF_VERTICAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - (5000 / __HEIGHT__)))'
 ```
 
+You may want to customize the default keyboard shortcuts. There are [many configuration options available](https://github.com/bigH/git-fuzzy/pull/16/files). Here's an example:
+
+```bash
+export GIT_FUZZY_STATUS_ADD_KEY='Ctrl-A'
+```
+
 ## Backups
 
 `git fuzzy` takes a backup of your current sha, branch, index diff, unstaged diff and new files. This is helpful in case you take an action hastily (like discarding a file you meant to stage) or there is a bug. If you'd like snapshots, simply set the variable below. I have the following entry in my `.zshrc` (with corresponding `.gitignore_global`):
