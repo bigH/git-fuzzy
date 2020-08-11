@@ -12,6 +12,7 @@ gf_menu_content() {
   gf_menu_item 'branch' 'list branches, `checkout`, `diff`, etc.'
   gf_menu_item 'log' 'browse the log and search diffs'
   gf_menu_item 'reflog' 'browse the reflog and search diffs'
+  gf_menu_item 'stash' 'browse stashed changes'
   echo
   gf_menu_item 'diff' 'compare up to two branches (remote or local)'
 
