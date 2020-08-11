@@ -14,11 +14,11 @@ gf_fzf_stash() {
   gf_fzf_one -m \
     --header-lines=2 \
     --header "$GF_STASH_HEADER" \
-    --preview 'git fuzzy helper stash_preview_content {1} {q}' \
-    --bind "$GIT_FUZZY_DROP_KEY:execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content {q})"
+    --preview 'git fuzzy helper stash_preview_content {1}' \
+    --bind "$GIT_FUZZY_DROP_KEY:execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)"
 }
 
 gf_stash() {
   # NB: first parameter is the "query", which is empty right now
-  git fuzzy helper stash_menu_content '' "$@" | gf_fzf_stash
+  git fuzzy helper stash_menu_content "$@" | gf_fzf_stash
 }

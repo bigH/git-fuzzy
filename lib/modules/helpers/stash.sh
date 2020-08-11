@@ -1,16 +1,8 @@
 #!/usr/bin/env bash
 
 gf_helper_stash_menu_content() {
-  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
-  printf "%s " "git stash list"
-  if [ -n "$1" ]; then
-    printf "%s" "| grep " "$(quote_params "$@")"
-    printf "%s\n\n" "$NORMAL"
-    git stash list | grep "$1"
-  else
-    printf "%s\n\n" "$NORMAL"
-    git stash list
-  fi
+  printf "%s%s%s%s%s%s%s\n\n" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "git stash list" "$NORMAL"
+  git stash list
 }
 
 gf_helper_stash_preview_content() {
