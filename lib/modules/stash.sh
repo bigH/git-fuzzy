@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-GIT_FUZZY_DROP_KEY=${GIT_FUZZY_DROP_KEY:-Alt-D}
+GIT_FUZZY_DROP_KEY="${GIT_FUZZY_DROP_KEY:-Alt-D}"
 
 # shellcheck disable=2016
 GF_STASH_HEADER='
@@ -11,12 +11,11 @@ GF_STASH_HEADER='
 '
 
 gf_fzf_stash() {
-  # shellcheck disable=2016
   gf_fzf_one -m \
     --header-lines=2 \
     --header "$GF_STASH_HEADER" \
     --preview 'git fuzzy helper stash_preview_content {1} {q}' \
-    --bind $GIT_FUZZY_DROP_KEY':execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content {q})'
+    --bind "$GIT_FUZZY_DROP_KEY:execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content {q})"
 }
 
 gf_stash() {
