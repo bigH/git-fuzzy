@@ -15,7 +15,10 @@ export FZF_DEFAULT_OPTS="\
   --bind 'change:top' \
   --no-height"
 
-export GF_BC_STL=' define min(a, b) { if (a < b) return a else return b } define max(a, b) { if (a > b) return a else return b } '
+export GF_BC_STL='
+define min(a, b) { if (a < b) return a else return b }
+define max(a, b) { if (a > b) return a else return b }
+'
 
 preview_window_settings() {
   IS_VERTICAL="$(run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD")"
