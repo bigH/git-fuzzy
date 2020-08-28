@@ -21,5 +21,10 @@ gf_fzf_diff_direct() {
 }
 
 gf_diff_direct() {
-  git fuzzy helper diff_direct_menu_content '' "$@" | gf_fzf_diff_direct "$@"
+  if ! git diff --quiet "$@"; then
+    git fuzzy helper diff_direct_menu_content '' "$@" | gf_fzf_diff_direct "$@"
+  else
+    gf_log_debug "empty diff"
+    exit 1
+  fi
 }
