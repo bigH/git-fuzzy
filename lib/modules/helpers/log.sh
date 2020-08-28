@@ -14,12 +14,10 @@ gf_helper_log_diff_query() {
 gf_helper_log_menu_content() {
   if [ -n "$1" ]; then
     QUERY="$(git fuzzy helper log_log_query "$1")"
-    shift
     # shellcheck disable=2086
-    gf_git_command_with_header_hidden_parameters 2 "$GF_LOG_MENU_PARAMS" log "$@" $QUERY
+    gf_git_command_with_header_hidden_parameters 2 "$GF_LOG_MENU_PARAMS" log $QUERY
   else
-    shift
-    gf_git_command_with_header_hidden_parameters 2 "$GF_LOG_MENU_PARAMS" log "$@"
+    gf_git_command_with_header_hidden_parameters 2 "$GF_LOG_MENU_PARAMS" log
   fi
 }
 
