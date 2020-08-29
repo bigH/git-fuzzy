@@ -26,30 +26,15 @@ if [ -z "$COLOR_SUPPORT" ]; then
 fi
 
 
-# quotes mult-word parameters in order to make a command copy-paste with ease
-quote_single_param() {
-  if [ -z "$1" ] || [[ "$1" = *' '* ]]; then
-    if [[ "$1" = *"'"* ]]; then
-      echo "\"$1\""
-    else
-      echo "'$1'"
-    fi
-  else
-    echo "$1"
-  fi
-}
-
-# quotes a list of params using `"$@"`
-# MISSING: support for anything escapable (`\n`, `\t`, etc.?)
-# MISSING: support quotes in params (e.g. quoting `'a' "b'd"`)
+# quotes a list of params by escaping whitespace and special characters so word-splitting happens as desired
 quote_params() {
   REST=""
   for arg in "$@"; do
     if [ -z "$REST" ]; then
-      printf "%s" "$(quote_single_param "$arg")"
+      printf "%s" "$(printf '%q' "$arg")"
       REST=true
     else
-      printf " %s" "$(quote_single_param "$arg")"
+      printf " %s" "$(printf '%q' "$arg")"
     fi
   done
 }
@@ -63,10 +48,10 @@ remove_switches() {
       -*) shift ;;
       *)
         if [ -z "$REST" ]; then
-          printf '%s' "$(quote_single_param "$1")"
+          printf '%s' "$(printf '%q' "$1")"
           REST=true
         else
-          printf ' %s' "$(quote_single_param "$1")"
+          printf ' %s' "$(printf '%q' "$1")"
         fi
         shift
         ;;
