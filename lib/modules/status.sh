@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # shellcheck disable=2016
 
-GIT_FUZZY_STATUS_ADD_KEY=${GIT_FUZZY_STATUS_ADD_KEY:-Alt-S}
-GIT_FUZZY_STATUS_EDIT_KEY=${GIT_FUZZY_STATUS_EDIT_KEY:-Alt-E}
-GIT_FUZZY_STATUS_COMMIT_KEY=${GIT_FUZZY_STATUS_COMMIT_KEY:-Alt-C}
-GIT_FUZZY_STATUS_RESET_KEY=${GIT_FUZZY_STATUS_RESET_KEY:-Alt-R}
-GIT_FUZZY_STATUS_DISCARD_KEY=${GIT_FUZZY_STATUS_DISCARD_KEY:-Alt-U}
+GIT_FUZZY_STATUS_ADD_KEY="${GIT_FUZZY_STATUS_ADD_KEY:-Alt-S}"
+GIT_FUZZY_STATUS_EDIT_KEY="${GIT_FUZZY_STATUS_EDIT_KEY:-Alt-E}"
+GIT_FUZZY_STATUS_COMMIT_KEY="${GIT_FUZZY_STATUS_COMMIT_KEY:-Alt-C}"
+GIT_FUZZY_STATUS_RESET_KEY="${GIT_FUZZY_STATUS_RESET_KEY:-Alt-R}"
+GIT_FUZZY_STATUS_DISCARD_KEY="${GIT_FUZZY_STATUS_DISCARD_KEY:-Alt-U}"
 
 GF_STATUS_HEADER='
 Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
@@ -23,7 +23,7 @@ gf_fzf_status() {
 
   gf_fzf -m --header "$GF_STATUS_HEADER" \
             --header-lines=2 \
-            --expect='$GIT_FUZZY_STATUS_EDIT_KEY,$GIT_FUZZY_STATUS_COMMIT_KEY' \
+            --expect="$GIT_FUZZY_STATUS_EDIT_KEY,$GIT_FUZZY_STATUS_COMMIT_KEY" \
             --nth=2 \
             --preview 'git fuzzy helper status_preview_content {1} {2..}' \
             --bind "$GIT_FUZZY_STATUS_ADD_KEY:execute-silent(git fuzzy helper status_add {+2..})+down+$RELOAD" \
