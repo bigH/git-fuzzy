@@ -11,13 +11,15 @@ gf_helper_reflog_diff_query() {
   echo "$1" | rev | cut -d'|' -f1 | rev
 }
 
+# TODO faithfully pass `reflog` params to `reflog_menu_contents`
 gf_helper_reflog_menu_content() {
-  if [ -n "$1" ]; then
-    QUERY="$(git fuzzy helper reflog_log_query "$1")"
+  QUERY="$(git fuzzy helper reflog_log_query "$1")"
+  shift
+  if [ -n "$QUERY" ]; then
     # shellcheck disable=2086
-    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog $QUERY
+    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog "$@" $QUERY
   else
-    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog
+    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog "$@"
   fi
 }
 

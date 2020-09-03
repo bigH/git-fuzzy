@@ -21,12 +21,13 @@ gf_fzf_reflog() {
     --header-lines=2 \
     --header "$GF_REFLOG_HEADER" \
     --preview 'git fuzzy helper reflog_preview_content {1} {q}' \
-    --bind 'change:reload(git fuzzy helper reflog_menu_content {q})' \
-    --bind $GIT_FUZZY_REFLOG_COMMIT_KEY':execute(git fuzzy diff {1}^ {1})' \
-    --bind $GIT_FUZZY_REFLOG_WORKING_COPY_KEY':execute(git fuzzy diff {1})' \
-    --bind $GIT_FUZZY_REFLOG_MERGE_BASE_KEY':execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})'
+    --bind "change:reload(git fuzzy helper reflog_menu_content {q}$(printf ' %q' "$@"))" \
+    --bind "$GIT_FUZZY_REFLOG_COMMIT_KEY:execute(git fuzzy diff {1}^ {1})" \
+    --bind "$GIT_FUZZY_REFLOG_WORKING_COPY_KEY:execute(git fuzzy diff {1})" \
+    --bind "$GIT_FUZZY_REFLOG_MERGE_BASE_KEY:"'execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})'
 }
 
 gf_reflog() {
-  git fuzzy helper reflog_menu_content "$@" | gf_fzf_reflog | gf_fzf_log_line_interpreter
+  # NB: first parameter is the "query", which is empty right now
+  git fuzzy helper reflog_menu_content '' "$@" | gf_fzf_reflog "$@" | gf_fzf_log_line_interpreter
 }
