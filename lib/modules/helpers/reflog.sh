@@ -17,7 +17,7 @@ gf_helper_reflog_menu_content() {
   shift
   if [ -n "$QUERY" ]; then
     # shellcheck disable=2086
-    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog "$@" $QUERY
+    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog $QUERY "$@"
   else
     gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog "$@"
   fi
