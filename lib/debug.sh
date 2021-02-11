@@ -44,11 +44,9 @@ gf_log_command() {
   if [ -n "$GF_COMMAND_DEBUG_MODE" ]; then
     if [ "$#" -gt 0 ]; then
       printf "[%s%sCMD%s]" "$GREEN" "$BOLD" "$NORMAL" >> "$GF_LOG_LOCATION"
-      printf '%s%s%s%s' "$GRAY" "$BOLD" ' $ ' "$NORMAL" >> "$GF_LOG_LOCATION"
-      printf '%s%s%s%s' "$CYAN" "$BOLD" "$(printf '%q' "$1")" "$NORMAL" >> "$GF_LOG_LOCATION"
+      printf '%s' "$GRAY" "$BOLD" ' $ ' "$NORMAL" "$CYAN" "$BOLD" "$(quote_params "$1")" "$NORMAL" >> "$GF_LOG_LOCATION"
       shift
-      printf '%s' "$GREEN" >> "$GF_LOG_LOCATION"
-      printf ' %s' "$(quote_params "$@")" >> "$GF_LOG_LOCATION"
+      printf ' %s' "$GREEN" "$(quote_params "$@")" >> "$GF_LOG_LOCATION"
       printf '%s' "$NORMAL" >> "$GF_LOG_LOCATION"
       echo >> "$GF_LOG_LOCATION"
     else
@@ -76,11 +74,10 @@ gf_log_internal() {
   if [ -n "$GF_INTERNAL_COMMAND_DEBUG_MODE" ]; then
     if [ "$#" -gt 0 ]; then
       printf "[%s%sCMD%s] (internal)" "$GRAY" "$BOLD" "$NORMAL" >> "$GF_LOG_LOCATION"
-      printf '%s%s%s%s' "$GRAY" "$BOLD" ' $ ' "$NORMAL" >> "$GF_LOG_LOCATION"
-      printf '%s%s%s%s' "$CYAN" "$BOLD" "$(printf '%q' "$1")" "$NORMAL" >> "$GF_LOG_LOCATION"
+      printf '%s' "$GRAY" "$BOLD" ' $ ' "$CYAN" "$BOLD" "$1" "$NORMAL" >> "$GF_LOG_LOCATION"
       shift
       printf '%s' "$GREEN" >> "$GF_LOG_LOCATION"
-      printf ' %s' "$(quote_params "$@")" >> "$GF_LOG_LOCATION"
+      printf '%s' "$(quote_params "$@")" >> "$GF_LOG_LOCATION"
       printf '%s' "$NORMAL" >> "$GF_LOG_LOCATION"
       echo >> "$GF_LOG_LOCATION"
     else

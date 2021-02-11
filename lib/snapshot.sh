@@ -23,8 +23,14 @@ gf_snapshot() {
     if [ ! -d "$NOW_DIR" ]; then
       mkdir "$NOW_DIR"
 
-      git rev-parse HEAD > "$NOW_DIR/HEAD"
-      git rev-parse --abbrev-ref HEAD > "$NOW_DIR/HEAD-branch"
+      if git rev-parse HEAD >/dev/null 2>&1 ; then
+        git rev-parse HEAD > "$NOW_DIR/HEAD"
+        git rev-parse --abbrev-ref HEAD > "$NOW_DIR/HEAD-branch"
+      else
+        echo 'no HEAD' > "$NOW_DIR/HEAD"
+        echo 'no HEAD' > "$NOW_DIR/HEAD-branch"
+      fi
+
       git diff > "$NOW_DIR/working-copy"
       git diff --staged > "$NOW_DIR/index"
 

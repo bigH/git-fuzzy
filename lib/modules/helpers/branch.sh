@@ -1,9 +1,7 @@
 #!/usr/bin/env bash
 
-GF_BRANCH_CURRENT_BRANCH="$(git rev-parse --abbrev-ref HEAD)"
-
 gf_helper_branch_menu_content() {
-  echo "${RED}${GF_BRANCH_CURRENT_BRANCH}${NORMAL}"
+  echo "${RED}$(git branch --show-current)${NORMAL}"
 
   # locals sorted by last commit
   GF_BRANCH_LOCAL_BRANCHES="$(git for-each-ref --sort='-committerdate' \

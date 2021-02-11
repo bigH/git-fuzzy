@@ -16,7 +16,7 @@ gf_helper_status_preview_content() {
 
   # NB: git status will quote paths with whitespace. currently that's not supported
 
-  if [ "??" = "$STATUS_CODE" ]; then
+  if [ "??" = "$STATUS_CODE" ] || [ "A" = "$STATUS_CODE" ]; then
     if [ -d "$FILE_PATH" ]; then
       # shellcheck disable=2086
       gf_command_with_header 2 $GF_STATUS_DIRECTORY_PREVIEW_COMMAND "$FILE_PATH"

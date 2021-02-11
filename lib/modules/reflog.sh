@@ -17,7 +17,7 @@ Use '"${YELLOW}|${NORMAL} to separate CLI args for ${MAGENTA}git reflog${NORMAL}
 gf_fzf_reflog() {
   PARAMS_FOR_SUBSTITUTION=''
   if [ "$#" -gt 0 ]; then
-    PARAMS_FOR_SUBSTITUTION="$(printf ' %q' "$@")"
+    PARAMS_FOR_SUBSTITUTION="$(quote_params "$@")"
   fi
 
   # shellcheck disable=2016
@@ -26,7 +26,7 @@ gf_fzf_reflog() {
     --header-lines=2 \
     --header "$GF_REFLOG_HEADER" \
     --preview 'git fuzzy helper reflog_preview_content {1} {q}' \
-    --bind "change:reload(git fuzzy helper reflog_menu_content {q}$PARAMS_FOR_SUBSTITUTION)" \
+    --bind "change:reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "$GIT_FUZZY_REFLOG_COMMIT_KEY:execute(git fuzzy diff {1}^ {1})" \
     --bind "$GIT_FUZZY_REFLOG_WORKING_COPY_KEY:execute(git fuzzy diff {1})" \
     --bind "$GIT_FUZZY_REFLOG_MERGE_BASE_KEY:"'execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})'

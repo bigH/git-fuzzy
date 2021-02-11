@@ -25,51 +25,10 @@ if [ -z "$COLOR_SUPPORT" ]; then
   export GREY="$GRAY"
 fi
 
-
-# quotes mult-word parameters in order to make a command copy-paste with ease
-quote_single_param() {
-  if [ -z "$1" ] || [[ "$1" = *' '* ]]; then
-    if [[ "$1" = *"'"* ]]; then
-      echo "\"$1\""
-    else
-      echo "'$1'"
-    fi
-  else
-    echo "$1"
-  fi
-}
-
-# quotes a list of params using `"$@"`
-# MISSING: support for anything escapable (`\n`, `\t`, etc.?)
-# MISSING: support quotes in params (e.g. quoting `'a' "b'd"`)
 quote_params() {
-  REST=""
-  for arg in "$@"; do
-    if [ -z "$REST" ]; then
-      printf "%s" "$(quote_single_param "$arg")"
-      REST=true
-    else
-      printf " %s" "$(quote_single_param "$arg")"
-    fi
-  done
-}
-
-# filter out switches
-remove_switches() {
-  REST=""
-  while [ "$#" -gt 0 ]; do
-    case "$1" in
-      --*) shift ;;
-      -*) shift ;;
-      *)
-        if [ -z "$REST" ]; then
-          printf '%s' "$(quote_single_param "$1")"
-          REST=true
-        else
-          printf ' %s' "$(quote_single_param "$1")"
-        fi
-        shift
-        ;;
-    esac
-  done
+  if [ "$#" -eq 0 ]; then
+    printf ''
+  else
+    printf '%q ' "$@"
+  fi
 }

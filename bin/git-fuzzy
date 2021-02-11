@@ -95,7 +95,7 @@ gf_run() {
     FUNC="gf_${COMMAND}_${SUB_COMMAND}"
     PARAMETERS_QUOTED="$(quote_params "$@")"
     if type "$FUNC" >/dev/null 2>&1; then
-      gf_log_internal "$FUNC" "$@"
+      gf_log_internal "$FUNC $PARAMETERS_QUOTED"
       eval "$FUNC $PARAMETERS_QUOTED"
     else
       gf_log_error "\`$COMMAND\` named \`${SUB_COMMAND}\` not found"
@@ -113,10 +113,10 @@ gf_run() {
     NON_INTERACTIVE_FUNC="gf_${COMMAND}_direct"
 
     if [ -z "$FORCE_INTERACTIVE" ] && type "$NON_INTERACTIVE_FUNC" >/dev/null 2>&1; then
-      gf_log_internal "$NON_INTERACTIVE_FUNC" "$@"
+      gf_log_internal "$NON_INTERACTIVE_FUNC $PARAMETERS_QUOTED"
       eval "$NON_INTERACTIVE_FUNC $PARAMETERS_QUOTED"
     elif type "$INTERACTIVE_FUNC" >/dev/null 2>&1; then
-      gf_log_internal "$INTERACTIVE_FUNC" "$@"
+      gf_log_internal "$INTERACTIVE_FUNC $PARAMETERS_QUOTED"
       eval "$INTERACTIVE_FUNC $PARAMETERS_QUOTED"
     else
       gf_log_error "\`$COMMAND\` not found"

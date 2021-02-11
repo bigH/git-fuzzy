@@ -17,9 +17,9 @@ gf_helper_reflog_menu_content() {
   shift
   if [ -n "$QUERY" ]; then
     # shellcheck disable=2086
-    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog $QUERY "$@"
+    gf_git_command_with_header_default_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog $QUERY "$@"
   else
-    gf_git_command_with_header_hidden_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog "$@"
+    gf_git_command_with_header_default_parameters 2 "$GF_REFLOG_MENU_PARAMS" reflog "$@"
   fi
 }
 
@@ -31,6 +31,6 @@ gf_helper_reflog_preview_content() {
     QUERY="$(git fuzzy helper reflog_diff_query "$2")"
 
     # shellcheck disable=2086
-    gf_git_command_with_header_hidden_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" $QUERY | gf_diff_renderer
+    gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" $QUERY | gf_diff_renderer
   fi
 }

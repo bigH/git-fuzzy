@@ -52,7 +52,7 @@ join_lines_quoted() {
 }
 
 gf_is_in_git_repo() {
-  git rev-parse HEAD > /dev/null 2>&1
+  git -C . rev-parse > /dev/null 2>&1
 }
 
 gf_merge_base(){
@@ -99,7 +99,7 @@ gf_interactive_command_logged() {
 
 gf_fzf() {
   if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
-    gf_log_command "fzf --ansi --no-sort --no-info \
+    gf_log_command_string "fzf --ansi --no-sort --no-info \
             $FZF_DEFAULT_OPTS_MULTI \
             $(preview_window_settings) \
             $(quote_params "$@")"
@@ -112,7 +112,7 @@ gf_fzf() {
 
 gf_fzf_one() {
   if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
-    gf_log_command "fzf +m --ansi --no-sort --no-info \
+    gf_log_command_string "fzf +m --ansi --no-sort --no-info \
             $(preview_window_settings) \
             $(quote_params "$@")"
   fi
@@ -126,7 +126,7 @@ gf_command_with_header() {
   shift
   printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
   # shellcheck disable=2046
-  printf "%s " $(quote_params "$@")
+  printf "%s " $(printf '%q ' "$@")
   printf "%s" "$NORMAL"
   # shellcheck disable=2034
   for i in $(seq 1 "$NUM"); do
@@ -142,11 +142,7 @@ gf_git_command() {
 gf_git_command_with_header() {
   NUM="$1"
   shift
-  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
-  # shellcheck disable=2046
-  printf "$GIT_CMD "
-  printf "%s" "$(quote_params "$@")"
-  printf "%s" "$NORMAL"
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "$GIT_CMD $(quote_params "$@")" "$NORMAL"
   # shellcheck disable=2034
   for i in $(seq 1 "$NUM"); do
     echo
@@ -154,25 +150,20 @@ gf_git_command_with_header() {
   "$GIT_CMD" -c color.ui=always "$@"
 }
 
-gf_git_command_with_header_hidden_parameters() {
+gf_git_command_with_header_default_parameters() {
   NUM="$1"
   shift
-  HIDDEN_PARAMETERS="$1"
+  DEFAULT_SUBCOMMAND_PARAMETERS="$1"
   shift
   SUB_COMMAND="$1"
   shift
-  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD"
-  # shellcheck disable=2046
-  printf "%s " "$GIT_CMD"
-  printf "%s" "$SUB_COMMAND " "$(quote_params "$@")"
-  printf "%s" "$NORMAL"
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "$GIT_CMD $SUB_COMMAND $(quote_params "$@")" "$NORMAL"
   # shellcheck disable=2034
   for i in $(seq 1 "$NUM"); do
     echo
   done
-  # shellcheck disable=2086
-  gf_log_command_string "$GIT_CMD  -c color.ui=always '$SUB_COMMAND' $HIDDEN_PARAMETERS $(quote_params "$@")"
-  eval "$GIT_CMD  -c color.ui=always '$SUB_COMMAND' $HIDDEN_PARAMETERS $(quote_params "$@")"
+  gf_log_command_string "$GIT_CMD -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
+  eval "$GIT_CMD -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
 }
 
 gf_quit() {

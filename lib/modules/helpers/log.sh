@@ -17,9 +17,9 @@ gf_helper_log_menu_content() {
   shift
   if [ -n "$QUERY" ]; then
     # shellcheck disable=2086
-    gf_git_command_with_header_hidden_parameters 2 "$GF_LOG_MENU_PARAMS" log $QUERY "$@"
+    gf_git_command_with_header_default_parameters 2 "$GF_LOG_MENU_PARAMS" log $QUERY "$@"
   else
-    gf_git_command_with_header_hidden_parameters 2 "$GF_LOG_MENU_PARAMS" log "$@"
+    gf_git_command_with_header_default_parameters 2 "$GF_LOG_MENU_PARAMS" log "$@"
   fi
 }
 
@@ -38,6 +38,6 @@ gf_helper_log_preview_content() {
     echo
 
     # shellcheck disable=2086
-    gf_git_command_with_header_hidden_parameters 1 "$GF_DIFF_COMMIT_PREVIEW_DEFAULTS" diff "$REF^" "$REF" $QUERY | gf_diff_renderer
+    gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_PREVIEW_DEFAULTS" diff "$REF^" "$REF" $QUERY | gf_diff_renderer
   fi
 }
