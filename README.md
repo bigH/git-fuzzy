@@ -51,6 +51,11 @@ Update your `.zshrc` file with the following line:
 antibody bundle bigH/git-fuzzy path:bin kind:path
 ```
 
+### zplug
+```
+zplug "bigH/git-fuzzy", as:command, use:"bin/git-fuzzy"
+```
+
 ## Usage
 
 Simply install and run `git fuzzy` and you can begin using the menu.
