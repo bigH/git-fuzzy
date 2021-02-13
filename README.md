@@ -92,9 +92,9 @@ Simply install and run `git fuzzy` and you can begin using the menu.
 
 ## Useful Information
 
-All items from the menu can be accessed via the CLI by running `git fuzzy <command>`. Many of the commands simply pass on additional CLI args to the underlying commands. (e.g. `git fuzzy diff a b -- XYZ` calls `git diff --name-only a b -- XYZ`)
+All items from the menu can be accessed via the CLI by running `git fuzzy <command>`. Many of the commands simply pass on additional CLI args to the underlying commands. (e.g. `git fuzzy diff a b -- XYZ` uses the args you provided in the listing and preview)
 
-Any time `git` command output is used in preview or listing, there is a header with the command run (useful for copy-pasting) and you can optionally [enable debugging switches](#stability--hacking) to see other commands being run in the background.
+Any time `git` command output is used in preview or listing, there is a header with the command run (useful for copy-pasting or just knowing what's happening). You can optionally [enable debugging switches](#stability--hacking) to see other commands being run in the background or how commands are routed.
 
 ## Customizing
 
@@ -110,7 +110,7 @@ For the ideal experience, install:
 export GF_GREP_COLOR='1;30;48;5;15'
 ```
 
-If provided, `GF_PREFERRED_PAGER` is used as a way to decorate diffs. Otherwise, `diff-so-fancy`, then `delta` are tried before using raw diffs. **Remember to adequately quote this value as it's used unquoted.**
+If provided, `GF_PREFERRED_PAGER` is used as a way to decorate diffs. Otherwise, `diff-so-fancy`, then `delta` are tried before using raw diffs. **Remember to adequately quote this value as it's subject to string splitting.**
 
 ```bash
 export GF_PREFERRED_PAGER="delta --theme=gruvbox --highlight-removed -w __WIDTH__"
@@ -141,7 +141,7 @@ You may want the diff search to behave differently in `git fuzzy diff` (this doe
 export GF_DIFF_SEARCH_DEFAULTS="--pickaxe-regex -S"
 ```
 
-You may want custom formats for your `log` and/or `reflog` experience. This is hidden from the command headers to save room and enable freedom in formatting parameters. **Remember to adequately quote this value as it's used unquoted.** If you have trouble quoting formats, you can use a pretty format alias (see `man git-config`) _The default is `--pretty=oneline --abbrev-commit`._
+You may want custom formats for your `log` and/or `reflog` experience. This is hidden from the command headers to save room and enable freedom in formatting parameters. **Remember to adequately quote this value as it's subject to string splitting.** If you have trouble quoting formats, you can use a pretty format alias (see `man git-config`) _The default is `--pretty=oneline --abbrev-commit`._
 
 ```bash
 # for `git fuzzy log`
@@ -151,7 +151,7 @@ export GF_LOG_MENU_PARAMS='--pretty="%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgr
 export GF_REFLOG_MENU_PARAMS='--pretty=fuzzyformat'
 ```
 
-You can also configure various `git` commands' default args in various contexts. This is hidden from the command headers to save room and enable freedom in formatting parameters. **Remember to adequately quote this value as it's used unquoted.** _These are not set by default._
+You can also configure various `git` commands' default args in various contexts. This is hidden from the command headers to save room and enable freedom in formatting parameters. **Remember to adequately quote this value as it's subject to string splitting.** _These are not set by default._
 
 ```bash
 # when diffing with branches or commits for preview
