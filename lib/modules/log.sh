@@ -27,9 +27,9 @@ gf_fzf_log() {
     --header "$GF_LOG_HEADER" \
     --preview 'git fuzzy helper log_preview_content {1} {q}' \
     --bind "change:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
-    --bind "$GIT_FUZZY_LOG_COMMIT_KEY:execute(git fuzzy diff {1}^ {1})" \
-    --bind "$GIT_FUZZY_LOG_WORKING_COPY_KEY:execute(git fuzzy diff {1})" \
-    --bind "$GIT_FUZZY_MERGE_BASE_KEY"':execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})'
+    --bind "$(lowercase "$GIT_FUZZY_LOG_COMMIT_KEY"):execute(git fuzzy diff {1}^ {1})" \
+    --bind "$(lowercase "$GIT_FUZZY_LOG_WORKING_COPY_KEY"):execute(git fuzzy diff {1})" \
+    --bind "$(lowercase "$GIT_FUZZY_MERGE_BASE_KEY")"':execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})'
 }
 
 gf_log() {

@@ -15,7 +15,7 @@ gf_fzf_stash() {
     --header-lines=2 \
     --header "$GF_STASH_HEADER" \
     --preview 'git fuzzy helper stash_preview_content {1}' \
-    --bind "$GIT_FUZZY_DROP_KEY:execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)"
+    --bind "$(lowercase "$GIT_FUZZY_DROP_KEY"):execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)"
 }
 
 gf_stash() {

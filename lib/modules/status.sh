@@ -23,21 +23,21 @@ gf_fzf_status() {
 
   gf_fzf -m --header "$GF_STATUS_HEADER" \
             --header-lines=2 \
-            --expect="$GIT_FUZZY_STATUS_EDIT_KEY,$GIT_FUZZY_STATUS_COMMIT_KEY" \
+            --expect="$(lowercase "$GIT_FUZZY_STATUS_EDIT_KEY"),$(lowercase "$GIT_FUZZY_STATUS_COMMIT_KEY")" \
             --nth=2 \
             --preview 'git fuzzy helper status_preview_content {1} {2..}' \
-            --bind "$GIT_FUZZY_STATUS_ADD_KEY:execute-silent(git fuzzy helper status_add {+2..})+down+$RELOAD" \
-            --bind "$GIT_FUZZY_STATUS_RESET_KEY:execute-silent(git fuzzy helper status_reset {+2..})+down+$RELOAD" \
-            --bind "$GIT_FUZZY_STATUS_DISCARD_KEY:execute-silent(git fuzzy helper status_discard {2..})+$RELOAD"
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_ADD_KEY"):execute-silent(git fuzzy helper status_add {+2..})+down+$RELOAD" \
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_RESET_KEY"):execute-silent(git fuzzy helper status_reset {+2..})+down+$RELOAD" \
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_DISCARD_KEY"):execute-silent(git fuzzy helper status_discard {2..})+$RELOAD"
 }
 
 gf_status_interpreter() {
   CONTENT="$(cat -)"
   HEAD="$(echo "$CONTENT" | head -n1)"
   TAIL="$(echo "$CONTENT" | tail -n +2)"
-  if [ "$HEAD" = "$GIT_FUZZY_STATUS_EDIT_KEY" ]; then
+  if [ "$(lowercase "$HEAD")" = "$(lowercase "$GIT_FUZZY_STATUS_EDIT_KEY")" ]; then
     eval "git fuzzy helper status_edit $(echo "$TAIL" | cut -c4- | join_lines_quoted)"
-  elif [ "$HEAD" = "$GIT_FUZZY_STATUS_COMMIT_KEY" ]; then
+  elif [ "$(lowercase "$HEAD")" = "$(lowercase "$GIT_FUZZY_STATUS_COMMIT_KEY")" ]; then
     eval "git fuzzy helper status_commit"
   else
     echo "$TAIL" | cut -c4-

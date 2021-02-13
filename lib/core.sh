@@ -47,6 +47,10 @@ hidden_preview_window_settings() {
   echo "$(preview_window_settings):hidden"
 }
 
+lowercase() {
+  echo "$1" | tr '[:upper:]' '[:lower:]'
+}
+
 join_lines_quoted() {
   paste -s -d"%" - | sed "s/%/' '/g" | sed "s/^/'/" | sed "s/$/'/"
 }
