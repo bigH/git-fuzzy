@@ -20,6 +20,9 @@ define min(a, b) { if (a < b) return a else return b }
 define max(a, b) { if (a > b) return a else return b }
 '
 
+WIDTH="$(tput cols)"
+HEIGHT="$(tput lines)"
+
 preview_window_settings() {
   IS_VERTICAL="$(run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD")"
 
@@ -36,9 +39,6 @@ preview_window_settings() {
 }
 
 run_bc_program() {
-  WIDTH="$(tput cols)"
-  HEIGHT="$(tput lines)"
-
   WIDTH_SUBSTITUTED="${1//__WIDTH__/$WIDTH}"
   echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
 }
