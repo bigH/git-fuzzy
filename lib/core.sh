@@ -72,7 +72,7 @@ gf_diff_renderer() {
     if [ -n "$FZF_PREVIEW_COLUMNS" ]; then
       cat - | ${GF_PREFERRED_PAGER//__WIDTH__/$FZF_PREVIEW_COLUMNS}
     else
-      cat - | $GF_PREFERRED_PAGER
+      cat - | ${GF_PREFERRED_PAGER//__WIDTH__/$WIDTH}
     fi
   elif type delta >/dev/null 2>&1; then
     if [ -n "$FZF_PREVIEW_COLUMNS" ]; then
@@ -103,12 +103,12 @@ gf_interactive_command_logged() {
 
 gf_fzf() {
   if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
-    gf_log_command_string "fzf --ansi --no-sort --no-info \
+    gf_log_command_string "fzf --ansi --no-sort --no-info --multi \
             $FZF_DEFAULT_OPTS_MULTI \
             $(preview_window_settings) \
             $(quote_params "$@")"
   fi
-  eval "fzf --ansi --no-sort --no-info \
+  eval "fzf --ansi --no-sort --no-info --multi \
           $FZF_DEFAULT_OPTS_MULTI \
           $(preview_window_settings) \
           $(quote_params "$@")"
