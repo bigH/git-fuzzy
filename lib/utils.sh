@@ -41,3 +41,18 @@ quote_params() {
     printf '%q ' "$@"
   fi
 }
+
+lowercase() {
+  echo "$1" | tr '[:upper:]' '[:lower:]'
+}
+
+join_lines_quoted() {
+  IFS=$'\r\n' eval 'LINES_TO_BE_QUOTED=($(cat -))'
+
+  if [ "${#LINES_TO_BE_QUOTED[@]}" -gt 0 ]; then
+    printf ' %q' "${LINES_TO_BE_QUOTED[@]}"
+  else
+    printf ''
+  fi
+}
+

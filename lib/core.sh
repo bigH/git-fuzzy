@@ -60,14 +60,6 @@ hidden_preview_window_settings() {
   echo "$(preview_window_settings):hidden"
 }
 
-lowercase() {
-  echo "$1" | tr '[:upper:]' '[:lower:]'
-}
-
-join_lines_quoted() {
-  paste -s -d"%" - | sed "s/%/' '/g" | sed "s/^/'/" | sed "s/$/'/"
-}
-
 gf_is_in_git_repo() {
   git -C . rev-parse > /dev/null 2>&1
 }
