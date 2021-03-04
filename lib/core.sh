@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+GIT_FUZZY_SELECT_ALL_KEY="${GIT_FUZZY_BRANCH_WORKING_COPY_KEY:-Alt-A}"
+GIT_FUZZY_SELECT_NONE_KEY="${GIT_FUZZY_BRANCH_WORKING_COPY_KEY:-Alt-D}"
+
 if [ -z "$GF_FZF_DEFAULTS_SET" ]; then
   export GF_FZF_DEFAULTS_SET="YES"
 
@@ -20,8 +23,8 @@ if [ -z "$GF_FZF_DEFAULTS_SET" ]; then
 
   export FZF_DEFAULT_OPTS_MULTI="\
     $FZF_DEFAULT_OPTS_MULTI \
-    --bind alt-d:deselect-all \
-    --bind alt-a:select-all"
+    --bind \"$(lowercase "$GIT_FUZZY_SELECT_NONE_KEY"):deselect-all\" \
+    --bind \"$(lowercase "$GIT_FUZZY_SELECT_ALL_KEY"):select-all\""
 fi
 
 
@@ -55,14 +58,6 @@ run_bc_program() {
 
 hidden_preview_window_settings() {
   echo "$(preview_window_settings):hidden"
-}
-
-lowercase() {
-  echo "$1" | tr '[:upper:]' '[:lower:]'
-}
-
-join_lines_quoted() {
-  paste -s -d"%" - | sed "s/%/' '/g" | sed "s/^/'/" | sed "s/$/'/"
 }
 
 gf_is_in_git_repo() {
