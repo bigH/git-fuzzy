@@ -66,7 +66,7 @@ if ! type fzf >/dev/null 2>&1; then
 fi
 
 FZF_VERSION="$(fzf --version)"
-MIN_FZF_VERSION="0.20.0"
+MIN_FZF_VERSION="0.21.0"
 if [ "$FZF_VERSION" = "$(echo -e "$FZF_VERSION\n$MIN_FZF_VERSION" | sort -V | head -n1)" ]; then
   # shellcheck disable=2016
   gf_log_warning '`fzf` is too old and may not work properly'
