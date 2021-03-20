@@ -65,11 +65,7 @@ gf_is_in_git_repo() {
 }
 
 gf_merge_base(){
-  if [ "$#" -eq 1 ]; then
-    git merge-base HEAD "$1"
-  else
-    git merge-base HEAD "$@"
-  fi
+  git merge-base HEAD "$@"
 }
 
 gf_diff_renderer() {
