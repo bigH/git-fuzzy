@@ -48,14 +48,11 @@ gf_helper_status_discard() {
   if [ "$#" = 0 ]; then
     gf_log_error 'tried to CHECKOUT in status with no file(s)'
   else
-    while [ "$#" -gt 0 ]; do
-      if git ls-files --error-unmatch "$1" > /dev/null 2>&1; then
-        gf_command_logged git checkout HEAD -- "$1"
-      else
-        gf_command_logged rm -rf "$1"
-      fi
-      shift
-    done
+    if git ls-files --error-unmatch "$1" > /dev/null 2>&1; then
+      gf_command_logged git checkout HEAD -- "$@"
+    else
+      gf_command_logged rm -rf "$@"
+    fi
   fi
 }
 
