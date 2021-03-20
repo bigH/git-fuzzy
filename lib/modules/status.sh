@@ -28,7 +28,7 @@ gf_fzf_status() {
             --preview 'git fuzzy helper status_preview_content {1} {2..}' \
             --bind "$(lowercase "$GIT_FUZZY_STATUS_ADD_KEY"):execute-silent(git fuzzy helper status_add {+2..})+down+$RELOAD" \
             --bind "$(lowercase "$GIT_FUZZY_STATUS_RESET_KEY"):execute-silent(git fuzzy helper status_reset {+2..})+down+$RELOAD" \
-            --bind "$(lowercase "$GIT_FUZZY_STATUS_DISCARD_KEY"):execute-silent(git fuzzy helper status_discard {2..})+$RELOAD"
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_DISCARD_KEY"):execute-silent(git fuzzy helper status_discard {+2..})+$RELOAD"
 }
 
 gf_status_interpreter() {
