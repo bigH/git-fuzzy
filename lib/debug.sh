@@ -65,7 +65,7 @@ gf_log_command_string() {
       echo >> "$GF_LOG_LOCATION"
     else
       # shellcheck disable=2016
-      error_exit '`gf_log_command` requires an actual command'
+      error_exit '`gf_log_command_string` requires an actual command'
     fi
   fi
 }
