@@ -25,3 +25,14 @@ gf_helper_stash_drop() {
   fi
 
 }
+
+gf_helper_stash_pop() {
+  if [ -z "$1" ]; then
+    echo "nothing to show"
+  else
+    STASH_ID="$(echo "$1" | cut -d':' -f1)"
+
+    git stash pop "$STASH_ID"
+  fi
+
+}

@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 
 GIT_FUZZY_DROP_KEY="${GIT_FUZZY_DROP_KEY:-Alt-D}"
+GIT_FUZZY_POP_KEY="${GIT_FUZZY_POP_KEY:-Alt-P}"
 
 # shellcheck disable=2016
 GF_STASH_HEADER='
 '"${WHITE}Enter${NORMAL} to ${GREEN}QUIT${NORMAL}"'
 
     '"${YELLOW}${BOLD}∆${NORMAL} ${GREEN}drop${NORMAL}  ${WHITE}$GIT_FUZZY_DROP_KEY${NORMAL}     ${GRAY}-- drop the selected stash${NORMAL}"'
+    '"${GREEN}${BOLD}⇧${NORMAL} ${GREEN}pop ${NORMAL}  ${WHITE}$GIT_FUZZY_POP_KEY${NORMAL}     ${GRAY}-- pops the selected stash${NORMAL}"'
 
 '
 
@@ -15,7 +17,8 @@ gf_fzf_stash() {
     --header-lines=2 \
     --header "$GF_STASH_HEADER" \
     --preview 'git fuzzy helper stash_preview_content {1}' \
-    --bind "$(lowercase "$GIT_FUZZY_DROP_KEY"):execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)"
+    --bind "$(lowercase "$GIT_FUZZY_DROP_KEY"):execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)" \
+    --bind "$(lowercase "$GIT_FUZZY_POP_KEY"):execute(git fuzzy helper stash_pop {1})+reload(git fuzzy helper stash_menu_content)"
 }
 
 gf_stash() {
