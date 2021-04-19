@@ -56,6 +56,12 @@ antibody bundle bigH/git-fuzzy path:bin kind:path
 zplug "bigH/git-fuzzy", as:command, use:"bin/git-fuzzy"
 ```
 
+### zinit
+```
+zinit ice as"program" pick"bin/git-fuzzy"
+zinit light bigH/git-fuzzy
+```
+
 ## Usage
 
 Simply install and run `git fuzzy` and you can begin using the menu.
