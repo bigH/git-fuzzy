@@ -29,12 +29,37 @@ git clone https://github.com/bigH/git-fuzzy.git
 echo "export PATH=\"$(pwd)/git-fuzzy/bin:\$PATH\"" >> ~/.bashrc
 ```
 
-### ZSH
+### Zsh
 ```bash
 git clone https://github.com/bigH/git-fuzzy.git
 
 # add the executable to your path
 echo "export PATH=\"$(pwd)/git-fuzzy/bin:\$PATH\"" >> ~/.zshrc
+```
+
+Alternatively, you can use a plugin manager:
+
+#### Antibody
+Update your `.zshrc` file with the following line:
+```
+antibody bundle bigH/git-fuzzy path:bin kind:path
+```
+
+#### Znap
+Run the following on the command line:
+```
+znap install bigH/git-fuzzy
+```
+
+#### zplug
+```
+zplug "bigH/git-fuzzy", as:command, use:"bin/git-fuzzy"
+```
+
+#### zinit
+```
+zinit ice as"program" pick"bin/git-fuzzy"
+zinit light bigH/git-fuzzy
 ```
 
 ### Fish
@@ -43,23 +68,6 @@ git clone https://github.com/bigH/git-fuzzy.git
 
 # add the executable to your path
 echo "set -x PATH (pwd)\"/git-fuzzy/bin:\$PATH\"" >> ~/.config/fish/config.fish
-```
-
-### Antibody
-Update your `.zshrc` file with the following line:
-```
-antibody bundle bigH/git-fuzzy path:bin kind:path
-```
-
-### zplug
-```
-zplug "bigH/git-fuzzy", as:command, use:"bin/git-fuzzy"
-```
-
-### zinit
-```
-zinit ice as"program" pick"bin/git-fuzzy"
-zinit light bigH/git-fuzzy
 ```
 
 ## Usage
