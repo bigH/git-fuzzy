@@ -186,6 +186,12 @@ You may want to customize the default keyboard shortcuts. There are [many config
 export GIT_FUZZY_STATUS_ADD_KEY='Ctrl-A'
 ```
 
+If you are using nano as your default editor, you need to pass `/dev/tty` as stdin otherwise you may receive an error similar to `Too many errors from stdintor to close the file...`:
+
+```bash
+git config --global core.editor 'nano < /dev/tty'
+```
+
 ## Backups
 
 `git fuzzy` takes a backup of your current sha, branch, index diff, unstaged diff and new files. This is helpful in case you take an action hastily (like discarding a file you meant to stage) or there is a bug. If you'd like snapshots, simply set the variable below. I have the following entry in my `.zshrc` (with corresponding `.gitignore_global`):
