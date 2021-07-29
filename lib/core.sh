@@ -36,7 +36,7 @@ define max(a, b) { if (a > b) return a else return b }
 WIDTH="$(tput cols)"
 HEIGHT="$(tput lines)"
 
-preview_window_settings() {
+preview_window_size_and_direction() {
   IS_VERTICAL="$(run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD")"
 
   if [ "$IS_VERTICAL" = '1' ]; then
@@ -56,8 +56,12 @@ run_bc_program() {
   echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
 }
 
+preview_window_settings() {
+  echo "$(preview_window_size_and_direction):nohidden"
+}
+
 hidden_preview_window_settings() {
-  echo "$(preview_window_settings):hidden"
+  echo "$(preview_window_size_and_direction):hidden"
 }
 
 gf_is_in_git_repo() {
