@@ -30,9 +30,6 @@ gf_helper_log_preview_content() {
     REF="$1"
     QUERY="$(git fuzzy helper log_diff_query "$2")"
 
-    # gf_git_command_with_header diff --stat="$FZF_PREVIEW_COLUMNS" "$REF^" "$REF"
-    # echo
-
     # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
     gf_git_command show --decorate --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
     echo
