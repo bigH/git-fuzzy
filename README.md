@@ -142,7 +142,7 @@ export BAT_STYLE=changes
 export BAT_THEME=zenburn
 ```
 
-You may often want to use a different branch and remote to use as your "merge-base" in `git fuzzy`. _The default is `origin/master`._
+You may often want to use a different branch and remote to use as your "merge-base" in `git fuzzy`. _The default is `origin/main`._
 
 ```bash
 export GF_BASE_REMOTE=upstream
