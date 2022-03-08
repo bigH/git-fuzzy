@@ -56,3 +56,6 @@ join_lines_quoted() {
   fi
 }
 
+extract_commit_hash_from_first_line() {
+  echo "$1" | sed 's/^\b([a-f0-9]){6,40}\b.*$/\1/'
+}

@@ -25,11 +25,11 @@ gf_fzf_log() {
     --phony \
     --header-lines=2 \
     --header "$GF_LOG_HEADER" \
-    --preview 'git fuzzy helper log_preview_content {1} {q}' \
+    --preview 'git fuzzy helper log_preview_content {..} {q}' \
     --bind "change:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
-    --bind "$(lowercase "$GIT_FUZZY_LOG_COMMIT_KEY"):execute(git fuzzy diff {1}^ {1})" \
-    --bind "$(lowercase "$GIT_FUZZY_LOG_WORKING_COPY_KEY"):execute(git fuzzy diff {1})" \
-    --bind "$(lowercase "$GIT_FUZZY_MERGE_BASE_KEY")"':execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})'
+    --bind "$(lowercase "$GIT_FUZZY_LOG_COMMIT_KEY"):execute(git fuzzy helper log_open_diff commit {..})" \
+    --bind "$(lowercase "$GIT_FUZZY_LOG_WORKING_COPY_KEY"):execute(git fuzzy helper log_open_diff working_copy {..})" \
+    --bind "$(lowercase "$GIT_FUZZY_MERGE_BASE_KEY")"':execute(git fuzzy helper log_open_diff merge_base {..})'
 }
 
 gf_log() {
