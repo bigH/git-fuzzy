@@ -36,6 +36,11 @@ define max(a, b) { if (a > b) return a else return b }
 WIDTH="$(tput cols)"
 HEIGHT="$(tput lines)"
 
+run_bc_program() {
+  WIDTH_SUBSTITUTED="${1//__WIDTH__/$WIDTH}"
+  echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
+}
+
 preview_window_size_and_direction() {
   IS_VERTICAL="$(run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD")"
 
@@ -49,11 +54,6 @@ preview_window_size_and_direction() {
 
   # NB: round the `bc -l` result
   echo "--preview-window=$PREVIEW_DIRECTION:${PREVIEW_SIZE%%.*}%"
-}
-
-run_bc_program() {
-  WIDTH_SUBSTITUTED="${1//__WIDTH__/$WIDTH}"
-  echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
 }
 
 preview_window_settings() {
