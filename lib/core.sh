@@ -36,6 +36,8 @@ define max(a, b) { if (a > b) return a else return b }
 WIDTH="$(tput cols)"
 HEIGHT="$(tput lines)"
 
+SHOULD_HIDE_HELP="0"
+
 run_bc_program() {
   WIDTH_SUBSTITUTED="${1//__WIDTH__/$WIDTH}"
   echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
@@ -47,9 +49,11 @@ preview_window_size_and_direction() {
   if [ "$IS_VERTICAL" = '1' ]; then
     PREVIEW_DIRECTION="$GF_VERTICAL_PREVIEW_LOCATION"
     PREVIEW_SIZE="$(run_bc_program "$GF_VERTICAL_PREVIEW_PERCENT_CALCULATION")"
+    SHOULD_HIDE_HELP="$(run_bc_program "$GF_VERTICAL_HIDE_HELP_CALCULATION")"
   else
     PREVIEW_DIRECTION="$GF_HORIZONTAL_PREVIEW_LOCATION"
     PREVIEW_SIZE="$(run_bc_program "$GF_HORIZONTAL_PREVIEW_PERCENT_CALCULATION")"
+    SHOULD_HIDE_HELP="$(run_bc_program "$GF_HORIZONTAL_HIDE_HELP_CALCULATION")"
   fi
 
   # NB: round the `bc -l` result

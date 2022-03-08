@@ -57,5 +57,10 @@ join_lines_quoted() {
 }
 
 extract_commit_hash_from_first_line() {
-  echo "$1" | sed 's/^\b([a-f0-9]){6,40}\b.*$/\1/'
+  # shellcheck disable=2001
+  echo "$1" | awk '{
+    for(i=1; i<=NF; i++) {
+      if(match($i, /^[0-9a-f]{7,40}$/)){ print $i }
+    }
+  }'
 }
