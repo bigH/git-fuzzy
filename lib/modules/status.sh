@@ -17,6 +17,10 @@ Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
 
 '
 
+if [ "$(particularly_small_screen)" = '1' ]; then
+  GF_STATUS_HEADER=''
+fi
+
 gf_fzf_status() {
   RELOAD="reload:git fuzzy helper status_menu_content"
   # doesn't work

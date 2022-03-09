@@ -14,6 +14,10 @@ Use '"${YELLOW}|${NORMAL} to separate CLI args for ${MAGENTA}git reflog${NORMAL}
 
 '
 
+if [ "$(particularly_small_screen)" = '1' ]; then
+  GF_REFLOG_HEADER=''
+fi
+
 gf_fzf_reflog() {
   PARAMS_FOR_SUBSTITUTION=''
   if [ "$#" -gt 0 ]; then

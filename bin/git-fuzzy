@@ -19,31 +19,31 @@ script_dir="$( cd -P "$( dirname "$script_source" )" >/dev/null 2>&1 && pwd )"
 
 # NB: all sourcing happens here.
 # -----------------------------------------
-lib_dir="$script_dir/../lib"
+git_fuzzy_dir="$script_dir/.."
 
-. "$lib_dir/load-configs.sh"
+. "$git_fuzzy_dir/lib/load-configs.sh"
 
-. "$lib_dir/snapshot.sh"
+. "$git_fuzzy_dir/lib/snapshot.sh"
 
-. "$lib_dir/utils.sh"
+. "$git_fuzzy_dir/lib/utils.sh"
 
-. "$lib_dir/debug.sh"
-. "$lib_dir/core.sh"
+. "$git_fuzzy_dir/lib/debug.sh"
+. "$git_fuzzy_dir/lib/core.sh"
 
-. "$lib_dir/modules/main.sh"
+. "$git_fuzzy_dir/lib/modules/main.sh"
 
-. "$lib_dir/modules/branch.sh"
-. "$lib_dir/modules/diff-checkout.sh"
-. "$lib_dir/modules/diff-direct.sh"
-. "$lib_dir/modules/diff.sh"
-. "$lib_dir/modules/log.sh"
-. "$lib_dir/modules/reflog.sh"
-. "$lib_dir/modules/status.sh"
-. "$lib_dir/modules/stash.sh"
+. "$git_fuzzy_dir/lib/modules/branch.sh"
+. "$git_fuzzy_dir/lib/modules/diff-checkout.sh"
+. "$git_fuzzy_dir/lib/modules/diff-direct.sh"
+. "$git_fuzzy_dir/lib/modules/diff.sh"
+. "$git_fuzzy_dir/lib/modules/log.sh"
+. "$git_fuzzy_dir/lib/modules/reflog.sh"
+. "$git_fuzzy_dir/lib/modules/status.sh"
+. "$git_fuzzy_dir/lib/modules/stash.sh"
 
-. "$lib_dir/modules/hub/pr.sh"
+. "$git_fuzzy_dir/lib/modules/hub/pr.sh"
 
-. "$lib_dir/modules/helpers.sh"
+. "$git_fuzzy_dir/lib/modules/helpers.sh"
 # -----------------------------------------
 
 # -- Invariants --

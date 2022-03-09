@@ -56,3 +56,11 @@ join_lines_quoted() {
   fi
 }
 
+extract_commit_hash_from_first_line() {
+  # shellcheck disable=2001
+  echo "$1" | awk '{
+    for(i=1; i<=NF; i++) {
+      if(match($i, /^[0-9a-f]{7,40}$/)){ print $i }
+    }
+  }'
+}

@@ -36,10 +36,27 @@ define max(a, b) { if (a > b) return a else return b }
 WIDTH="$(tput cols)"
 HEIGHT="$(tput lines)"
 
-preview_window_size_and_direction() {
-  IS_VERTICAL="$(run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD")"
+SHOULD_HIDE_HELP="0"
 
-  if [ "$IS_VERTICAL" = '1' ]; then
+run_bc_program() {
+  WIDTH_SUBSTITUTED="${1//__WIDTH__/$WIDTH}"
+  echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
+}
+
+is_vertical() {
+  run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD"
+}
+
+particularly_small_screen() {
+  if [ "$(is_vertical)" = '1' ]; then
+    run_bc_program "$GF_VERTICAL_SMALL_SCREEN_CALCULATION"
+  else
+    run_bc_program "$GF_HORIZONTAL_SMALL_SCREEN_CALCULATION"
+  fi
+}
+
+preview_window_size_and_direction() {
+  if [ "$(is_vertical)" = '1' ]; then
     PREVIEW_DIRECTION="$GF_VERTICAL_PREVIEW_LOCATION"
     PREVIEW_SIZE="$(run_bc_program "$GF_VERTICAL_PREVIEW_PERCENT_CALCULATION")"
   else
@@ -49,11 +66,6 @@ preview_window_size_and_direction() {
 
   # NB: round the `bc -l` result
   echo "--preview-window=$PREVIEW_DIRECTION:${PREVIEW_SIZE%%.*}%"
-}
-
-run_bc_program() {
-  WIDTH_SUBSTITUTED="${1//__WIDTH__/$WIDTH}"
-  echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
 }
 
 preview_window_settings() {

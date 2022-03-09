@@ -18,8 +18,16 @@ if [ -z "$GF_HORIZONTAL_PREVIEW_PERCENT_CALCULATION" ]; then
   export GF_HORIZONTAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - ((7000 + (11 * __WIDTH__))  / __WIDTH__)))'
 fi
 
+if [ -z "$GF_HORIZONTAL_SMALL_SCREEN_CALCULATION" ]; then
+  export GF_HORIZONTAL_SMALL_SCREEN_CALCULATION='__HEIGHT__ <= 30'
+fi
+
 if [ -z "$GF_VERTICAL_PREVIEW_PERCENT_CALCULATION" ]; then
   export GF_VERTICAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - ((4000 + (5 * __HEIGHT__)) / __HEIGHT__)))'
+fi
+
+if [ -z "$GF_VERTICAL_SMALL_SCREEN_CALCULATION" ]; then
+  export GF_VERTICAL_SMALL_SCREEN_CALCULATION='__HEIGHT__ <= 60'
 fi
 
 # -- Configuring External Command Style: --
@@ -69,7 +77,7 @@ if [ -z "$GF_BASE_REMOTE" ]; then
 fi
 
 if [ -z "$GF_BASE_BRANCH" ]; then
-  GF_BASE_BRANCH="$(git symbolic-ref -q "refs/remotes/${GF_BASE_REMOTE}/HEAD" || echo -n "master" | sed "s@^refs/remotes/${GF_BASE_REMOTE}/@@")"
+  GF_BASE_BRANCH="$(git symbolic-ref -q "refs/remotes/${GF_BASE_REMOTE}/HEAD" || echo -n "main" | sed "s@^refs/remotes/${GF_BASE_REMOTE}/@@")"
   export GF_BASE_BRANCH
 fi
 
