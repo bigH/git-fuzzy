@@ -9,6 +9,10 @@ GF_DIFF_CHECKOUT_HEADER='
 
 '
 
+if [ "$(should_hide_header)" = '1' ]; then
+  GF_DIFF_CHECKOUT_HEADER=''
+fi
+
 gf_fzf_diff_checkout() {
   # shellcheck disable=2016
   RELOAD_COMMAND="git fuzzy helper diff_direct_menu_content {q} '$1' '$2'"

@@ -6,6 +6,10 @@ GF_DIFF_DIRECT_HEADER='
 
 '
 
+if [ "$(should_hide_header)" = '1' ]; then
+  GF_DIFF_DIRECT_HEADER=''
+fi
+
 gf_fzf_diff_direct() {
   PARAMETERS_QUOTED="$(quote_params "$@")"
 

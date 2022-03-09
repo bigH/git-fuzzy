@@ -22,6 +22,7 @@ Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
   BRANCH_HEADER_BRANCH_CHECKOUT="    ${GREEN}${BOLD}checkout ${YELLOW}${BOLD}${NORMAL}  ${WHITE}${GIT_FUZZY_BRANCH_CHECKOUT_KEY}${NORMAL}"
   BRANCH_HEADER_FILE_CHECKOUT="    ${GREEN}${BOLD}checkout ${YELLOW}${BOLD}📁${NORMAL} ${WHITE}${GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY}${NORMAL}"
   if [ -n "$(git status --short)" ]; then
+    # files are dirty - warn that checkout is potentially undesired
     BRANCH_HEADER_BRANCH_CHECKOUT="${GRAY}(${RED}${BOLD}*${GRAY}) ${RED}${BOLD}checkout ${YELLOW}${BOLD}${NORMAL}  ${WHITE}${GIT_FUZZY_BRANCH_CHECKOUT_KEY}${NORMAL}"
     BRANCH_HEADER_FILE_CHECKOUT="${GRAY}(${RED}${BOLD}*${GRAY}) ${RED}${BOLD}checkout ${YELLOW}${BOLD}📁${NORMAL} ${WHITE}${GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY}${NORMAL}"
     BRANCH_HEADER="$BRANCH_HEADER"'
@@ -35,6 +36,10 @@ BRANCH_HEADER="$BRANCH_HEADER"'
       '"${GREEN}commit log${NORMAL}  ${WHITE}$GIT_FUZZY_BRANCH_COMMIT_LOG_KEY${NORMAL}    ${RED}${BOLD}delete branch ✗${NORMAL}  ${WHITE}$GIT_FUZZY_BRANCH_DELETE_BRANCH_KEY${NORMAL}"'
 
 '
+
+if [ "$(should_hide_header)" = '1' ]; then
+  BRANCH_HEADER=''
+fi
 
   # shellcheck disable=2046,2016,2090,2086
   gf_fzf_one -m \

@@ -9,10 +9,14 @@ GF_STASH_HEADER='
 '"${WHITE}Enter${NORMAL} to ${GREEN}QUIT${NORMAL}"'
 
     '"${YELLOW}${BOLD}∆${NORMAL} ${GREEN}drop${NORMAL}   ${WHITE}$GIT_FUZZY_DROP_KEY${NORMAL}     ${GRAY}-- drop the selected stash${NORMAL}"'
-    '"${YELLOW}${BOLD}⇧${NORMAL} ${GREEN}pop ${NORMAL}   ${WHITE}$GIT_FUZZY_POP_KEY${NORMAL}     ${GRAY}-- pops the selected stash${NORMAL}"' 
+    '"${YELLOW}${BOLD}⇧${NORMAL} ${GREEN}pop ${NORMAL}   ${WHITE}$GIT_FUZZY_POP_KEY${NORMAL}     ${GRAY}-- pops the selected stash${NORMAL}"'
     '"${GREEN}${BOLD}⇧${NORMAL} ${GREEN}apply${NORMAL}  ${WHITE}$GIT_FUZZY_APPLY_KEY${NORMAL}     ${GRAY}-- applies the selected stash${NORMAL}"'
 
 '
+
+if [ "$(should_hide_header)" = '1' ]; then
+  GF_STASH_HEADER=''
+fi
 
 gf_fzf_stash() {
   gf_fzf_one -m \
