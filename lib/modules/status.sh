@@ -17,7 +17,7 @@ Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
 
 '
 
-if [ "$(should_hide_header)" = '1' ]; then
+if [ "$(particularly_small_screen)" = '1' ]; then
   GF_STATUS_HEADER=''
 fi
 

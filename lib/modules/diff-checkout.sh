@@ -9,7 +9,7 @@ GF_DIFF_CHECKOUT_HEADER='
 
 '
 
-if [ "$(should_hide_header)" = '1' ]; then
+if [ "$(particularly_small_screen)" = '1' ]; then
   GF_DIFF_CHECKOUT_HEADER=''
 fi
 

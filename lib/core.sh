@@ -47,11 +47,11 @@ is_vertical() {
   run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD"
 }
 
-should_hide_header() {
+particularly_small_screen() {
   if [ "$(is_vertical)" = '1' ]; then
-    run_bc_program "$GF_VERTICAL_HIDE_HELP_CALCULATION"
+    run_bc_program "$GF_VERTICAL_SMALL_SCREEN_CALCULATION"
   else
-    run_bc_program "$GF_HORIZONTAL_HIDE_HELP_CALCULATION"
+    run_bc_program "$GF_HORIZONTAL_SMALL_SCREEN_CALCULATION"
   fi
 }
 

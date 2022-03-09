@@ -31,9 +31,14 @@ gf_helper_log_preview_content() {
     if [ -n "$REF" ]; then
       QUERY="$(git fuzzy helper log_diff_query "$2")"
 
-      # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
-      gf_git_command show --decorate --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
-      echo
+      if [ "$(particularly_small_screen)" = '1' ]; then
+        # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
+        gf_git_command show --decorate --oneline --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
+      else
+        # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
+        gf_git_command show --decorate --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
+        echo
+      fi
 
       # shellcheck disable=2086
       gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_PREVIEW_DEFAULTS" diff "$REF^" "$REF" $QUERY | gf_diff_renderer
