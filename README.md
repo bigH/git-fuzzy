@@ -194,6 +194,16 @@ export GF_HORIZONTAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - (7000 / 
 export GF_VERTICAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - (5000 / __HEIGHT__)))'
 ```
 
+In cases where you are using a particularly small terminal, you can configure the following calculations to determine when to hide extraneous things. Note that both defaults use `__HEIGHT__`.
+
+```bash
+# use __WIDTH__ for horizontal scenarios
+export GF_HORIZONTAL_SMALL_SCREEN_CALCULATION='__HEIGHT__ <= 30'
+
+# use __HEIGHT__ for horizontal scenarios
+export GF_VERTICAL_SMALL_SCREEN_CALCULATION='__HEIGHT__ <= 60'
+```
+
 You may want to customize the default keyboard shortcuts. There are [many configuration options available](https://github.com/bigH/git-fuzzy/pull/16/files). Here's an example:
 
 ```bash
