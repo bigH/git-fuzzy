@@ -112,11 +112,11 @@ Any time `git` command output is used in preview or listing, there is a header w
 
 ## Customizing
 
-For the ideal experience, install:
+For the ideal experience, install the following optional tools to your `PATH`:
 
-- [`delta`](https://github.com/dandavison/delta) or [`diff-so-fancy`](https://github.com/so-fancy/diff-so-fancy)
-- [`bat`](https://github.com/sharkdp/bat)
-- [`exa`](https://github.com/ogham/exa)
+- [`delta`](https://github.com/dandavison/delta) or [`diff-so-fancy`](https://github.com/so-fancy/diff-so-fancy) for nicer looking diffs
+- [`bat`](https://github.com/sharkdp/bat) for a colorized alternative to `cat`
+- [`exa`](https://github.com/ogham/exa) for a `git`-enabled, and better colorized alternative to `ls`
 
 `git fuzzy diff` uses `grep` to highlight your search term. The default may clash with `diff` formatting or just not be to your liking. You can configure `git fuzzy` without affecting the global setting.
 
@@ -146,8 +146,10 @@ You may often want to use a different branch and remote to use as your "merge-ba
 
 ```bash
 export GF_BASE_REMOTE=upstream
-export GF_BASE_BRANCH=main
+export GF_BASE_BRANCH=trunk
 ```
+
+**FOOTGUN**: If you work in a repository that's changed it's default `HEAD` (e.g. from `master` to `main`) since your initial `clone`, you may need to run `git remote set-head <remote name> <branch name>`. Use `git symbolic-ref -q "refs/remotes/<remote name>/HEAD"` to check what the current value is.
 
 You may want the diff search to behave differently in `git fuzzy diff` (this doesn't apply to `log` or any other command that uses `diff`). The query will be quoted by `fzf` and provided as the next argument. In the default case, that means `-G <query>`. _The default is `-G`._
 
