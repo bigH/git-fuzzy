@@ -48,7 +48,7 @@ gf_helper_log_preview_content() {
   fi
 }
 
-gf_helper_log_open_commit_diff() {
+gf_helper_log_open_diff() {
   if [ -z "$1" ]; then
     echo "nothing to show (no mode selected)"
   else
@@ -57,13 +57,21 @@ gf_helper_log_open_commit_diff() {
     if [ -z "$1" ]; then
       echo "nothing to show (empty line)"
     else
-      COMMIT_HASH="$(extract_commit_hash_from_first_line "$1")"
+      REF="$(extract_commit_hash_from_first_line "$1")"
       if [ -n "$REF" ]; then
         case "$MODE" in
-          commit)       git fuzzy diff "$REF^" "$REF" ;;
-          working_copy) git fuzzy diff "$REF" ;;
-          merge_base)   git fuzzy diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" ;;
-          *) log_error "mode unknown: $MODE" ;;
+          commit)
+            git fuzzy diff "$REF^" "$REF"
+            ;;
+          working_copy)
+            git fuzzy diff "$REF"
+            ;;
+          merge_base)
+            git fuzzy diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF"
+            ;;
+          *)
+            log_error "mode unknown: $MODE"
+            ;;
         esac
       else
         echo "nothing to show (no commit found on line)"
