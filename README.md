@@ -151,6 +151,13 @@ export GF_BASE_BRANCH=trunk
 
 **FOOTGUN**: If you work in a repository that's changed it's default `HEAD` (e.g. from `master` to `main`) since your initial `clone`, you may need to run `git remote set-head <remote name> <branch name>`. Use `git symbolic-ref -q "refs/remotes/<remote name>/HEAD"` to check what the current value is.
 
+For some repos, it can be useful to turn off the remote branch listing in `git fuzzy branch`. _By default, `git fuzzy` displays remote branches._
+
+```bash
+# any non-empty value will result in skipping remotes (including 'no')
+export GF_BRANCH_SKIP_REMOTE_BRANCHES="yes"
+```
+
 You may want the diff search to behave differently in `git fuzzy diff` (this doesn't apply to `log` or any other command that uses `diff`). The query will be quoted by `fzf` and provided as the next argument. In the default case, that means `-G <query>`. _The default is `-G`._
 
 ```bash
@@ -223,8 +230,13 @@ git config --global core.editor 'nano < /dev/tty'
 `git fuzzy` takes a backup of your current sha, branch, index diff, unstaged diff and new files. This is helpful in case you take an action hastily (like discarding a file you meant to stage) or there is a bug. If you'd like snapshots, simply set the variable below. I have the following entry in my `.zshrc` (with corresponding `.gitignore_global`):
 
 ```bash
-# a directory in the repository is perfectly fine
-export GF_SNAPSHOT_DIRECTORY='./git-fuzzy-snapshots'
+export GF_SNAPSHOT_DIRECTORY='.git-fuzzy-snapshots'
+```
+
+Alternatively, if you'd like to avoid having these files in your repo directory, you can simply set the snapshot location like so:
+
+```bash
+export GF_SNAPSHOT_DIRECTORY="$HOME/.git-fuzzy-snapshots"
 ```
 
 ## `bc` Usage

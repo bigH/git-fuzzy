@@ -15,16 +15,18 @@ gf_helper_branch_menu_content() {
     echo "$GF_BRANCH_LOCAL_BRANCHES"
   fi
 
-  # locals sorted by last commit
-  GF_BRANCH_REMOTE_BRANCHES="$(git for-each-ref --sort='-committerdate' \
-    --format="$YELLOW$BOLD%(refname:short)$NORMAL|$MAGENTA%(committerdate:relative)$NORMAL|$CYAN%(committername)$NORMAL" \
-    refs/remotes | \
-    column -t -s'|' \
-  )"
+  if [ -n "$GF_BRANCH_SKIP_REMOTE_BRANCHES" ]; then
+    # locals sorted by last commit
+    GF_BRANCH_REMOTE_BRANCHES="$(git for-each-ref --sort='-committerdate' \
+      --format="$YELLOW$BOLD%(refname:short)$NORMAL|$MAGENTA%(committerdate:relative)$NORMAL|$CYAN%(committername)$NORMAL" \
+      refs/remotes | \
+      column -t -s'|' \
+    )"
 
-  if [ -n "$GF_BRANCH_REMOTE_BRANCHES" ]; then
-    echo
-    echo "$GF_BRANCH_REMOTE_BRANCHES"
+    if [ -n "$GF_BRANCH_REMOTE_BRANCHES" ]; then
+      echo
+      echo "$GF_BRANCH_REMOTE_BRANCHES"
+    fi
   fi
 }
 
