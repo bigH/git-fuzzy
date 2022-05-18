@@ -7,6 +7,7 @@ GIT_FUZZY_REFLOG_COMMIT_KEY="${GIT_FUZZY_REFLOG_COMMIT_KEY:-Alt-D}"
 # shellcheck disable=2016
 GF_REFLOG_HEADER='
 Use '"${YELLOW}|${NORMAL} to separate CLI args for ${MAGENTA}git reflog${NORMAL} vs ${MAGENTA}git diff${NORMAL}. ${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
+Select an entry with '"${WHITE}<Tab>${NORMAL}"' to use as basis for comparison in the preview.
 
   '"${YELLOW}${BOLD}∆${NORMAL} ${GREEN}working copy${NORMAL}  ${WHITE}$GIT_FUZZY_REFLOG_WORKING_COPY_KEY${NORMAL}    ${GRAY}-- search messages${NORMAL}  ${MAGENTA}--grep=Foo${NORMAL}"'
     '"${YELLOW}${BOLD}∆${NORMAL} ${GREEN}merge-base${NORMAL}  ${WHITE}$GIT_FUZZY_REFLOG_MERGE_BASE_KEY${NORMAL}        ${GRAY}-- search patch${NORMAL}  ${MAGENTA}-G 'Foo'${NORMAL}"'

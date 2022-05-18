@@ -17,6 +17,7 @@ GF_BRANCH_DELETE_BINDING="execute-silent($GF_BRANCH_ATTEMPT_DELETE)+$GF_BRANCH_R
 gf_fzf_branch() {
 BRANCH_HEADER='
 Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
+Select an entry with '"${WHITE}<Tab>${NORMAL}"' to use as basis for comparison in the preview.
 '
   BRANCH_CHECKOUT_BINDING="$(lowercase "$GIT_FUZZY_BRANCH_CHECKOUT_KEY"):execute-silent($GF_BRANCH_CHECKOUT)+$GF_BRANCH_RELOAD"
   BRANCH_HEADER_BRANCH_CHECKOUT="    ${GREEN}${BOLD}checkout ${YELLOW}${BOLD}${NORMAL}  ${WHITE}${GIT_FUZZY_BRANCH_CHECKOUT_KEY}${NORMAL}"
