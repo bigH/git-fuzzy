@@ -203,10 +203,10 @@ export GF_HORIZONTAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - (7000 / 
 export GF_VERTICAL_PREVIEW_PERCENT_CALCULATION='max(50, min(80, 100 - (5000 / __HEIGHT__)))'
 ```
 
-In cases where you are using a particularly small terminal, you can configure the following calculations to determine when to hide extraneous things. Note that both defaults use `__HEIGHT__`.
+In cases where you are using a particularly small terminal, you can configure the following calculations to determine when to hide extraneous things. Note that both defaults use `__HEIGHT__`, but `__WIDTH__` is also available.
 
 ```bash
-# use __WIDTH__ for horizontal scenarios
+# use __HEIGHT__ for horizontal scenarios
 export GF_HORIZONTAL_SMALL_SCREEN_CALCULATION='__HEIGHT__ <= 30'
 
 # use __HEIGHT__ for horizontal scenarios
