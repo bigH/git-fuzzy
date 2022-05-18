@@ -50,7 +50,7 @@ fi
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_COMMIT_LOG_KEY")"':execute(git fuzzy log {1})' \
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_WORKING_COPY_KEY")"':execute(git fuzzy diff {1})' \
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_MERGE_BASE_KEY")"':execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})' \
-             --preview 'git fuzzy helper branch_preview_content {1}' | \
+             --preview 'git fuzzy helper branch_preview_content {1} {+1}' | \
     awk '{ print $1 }'
 }
 

@@ -34,9 +34,15 @@ gf_helper_branch_preview_content() {
   if [ -z "$1" ]; then
     echo "nothing to show"
   else
-    REF="$1"
-    # shellcheck disable=2086
-    gf_git_command_with_header 1 diff $GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" | gf_diff_renderer
+    if [ "$#" -eq 2 ] && [ "$1" != "$2" ]; then
+      # use $2 as the "base" and $1 as the "change"
+      # shellcheck disable=2086
+      gf_git_command_with_header 1 diff $GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS "$2" "$1" | gf_diff_renderer
+    else
+      # check against merge-base of the branch under cursor
+      # shellcheck disable=2086
+      gf_git_command_with_header 1 diff $GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS "$(git merge-base "$GF_BASE_BRANCH" "$1")" "$1" | gf_diff_renderer
+    fi
   fi
 }
 

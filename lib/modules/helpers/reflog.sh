@@ -27,10 +27,16 @@ gf_helper_reflog_preview_content() {
   if [ -z "$1" ]; then
     echo "nothing to show"
   else
-    REF="$1"
+    REF="$(extract_commit_hash_from_first_line "$1")"
     QUERY="$(git fuzzy helper reflog_diff_query "$2")"
+    BASE="$(extract_commit_hash_from_first_line "$3")"
 
-    # shellcheck disable=2086
-    gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" $QUERY | gf_diff_renderer
+    if [ "$BASE" == "$REF" ]; then
+      # shellcheck disable=2086
+      gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" $QUERY | gf_diff_renderer
+    else
+      # shellcheck disable=2086
+      gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$BASE" "$REF" $QUERY | gf_diff_renderer
+    fi
   fi
 }

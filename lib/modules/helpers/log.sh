@@ -30,18 +30,25 @@ gf_helper_log_preview_content() {
     REF="$(extract_commit_hash_from_first_line "$1")"
     if [ -n "$REF" ]; then
       QUERY="$(git fuzzy helper log_diff_query "$2")"
+      BASE="$(extract_commit_hash_from_first_line "$3")"
 
-      if [ "$(particularly_small_screen)" = '1' ]; then
-        # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
-        gf_git_command show --decorate --oneline --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
+      if [ "$BASE" == "$REF" ]; then
+        # only show header when no commits selected
+        if [ "$(particularly_small_screen)" = '1' ]; then
+          # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
+          gf_git_command show --decorate --oneline --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
+        else
+          # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
+          gf_git_command show --decorate --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
+          echo
+        fi
+
+        # shellcheck disable=2086
+        gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_PREVIEW_DEFAULTS" diff "$REF^" "$REF" $QUERY | gf_diff_renderer
       else
-        # NB: `fold` is not aware of color codes; however, folding over whitespace seems fine
-        gf_git_command show --decorate --no-patch "$REF" | fold -s -w "$FZF_PREVIEW_COLUMNS"
-        echo
+        # shellcheck disable=2086
+        gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_PREVIEW_DEFAULTS" diff "$BASE" "$REF" $QUERY | gf_diff_renderer
       fi
-
-      # shellcheck disable=2086
-      gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_PREVIEW_DEFAULTS" diff "$REF^" "$REF" $QUERY | gf_diff_renderer
     else
       echo "nothing to show (no commit found on line)"
     fi
