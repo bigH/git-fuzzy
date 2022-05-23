@@ -32,8 +32,14 @@ gf_helper_reflog_preview_content() {
     BASE="$(extract_commit_hash_from_first_line "$3")"
 
     if [ "$BASE" == "$REF" ]; then
+      MERGE_BASE="$(git merge-base "$GF_BASE_BRANCH" "$REF")"
+      if [ "$(particularly_small_screen)" = '0' ]; then
+        # shellcheck disable=2086
+        gf_git_command log $GF_LOG_MENU_PARAMS "$MERGE_BASE..$REF"
+        echo
+      fi
       # shellcheck disable=2086
-      gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$(git merge-base "$GF_BASE_BRANCH" "$REF")" "$REF" $QUERY | gf_diff_renderer
+      gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$MERGE_BASE..$REF" $QUERY | gf_diff_renderer
     else
       # shellcheck disable=2086
       gf_git_command_with_header_default_parameters 1 "$GF_DIFF_COMMIT_RANGE_PREVIEW_DEFAULTS" diff "$BASE" "$REF" $QUERY | gf_diff_renderer
