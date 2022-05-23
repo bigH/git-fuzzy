@@ -178,8 +178,8 @@ gf_git_command_with_header_default_parameters() {
   shift
   printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "$GIT_CMD $SUB_COMMAND $(quote_params "$@")" "$NORMAL"
   # shellcheck disable=2034
-  for i in $(seq 1 "$NUM"); do
-    echo
+  for i in $(seq 0 "$NUM"); do
+    [ "$i" -gt 0 ] && echo
   done
   gf_log_command_string "$GIT_CMD -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
   eval "$GIT_CMD -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
