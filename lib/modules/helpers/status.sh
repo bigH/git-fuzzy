@@ -13,6 +13,7 @@ fi
 gf_helper_status_preview_content() {
   STATUS_CODE="$1"
   FILE_PATH="$2"
+  RENAMED_FILE_PATH="$3"
 
   # NB: git status will quote paths with whitespace. currently that's not supported
 
@@ -24,8 +25,10 @@ gf_helper_status_preview_content() {
       # shellcheck disable=2086
       gf_command_with_header 2 $GF_STATUS_FILE_PREVIEW_COMMAND "$FILE_PATH"
     fi
-  elif [ ! -e "$FILE_PATH" ]; then
+  elif [ ! -e "$FILE_PATH" ] && [ -z "$RENAMED_FILE_PATH" ]; then
     echo "\`${CYAN}${FILE_PATH}${NORMAL}\` ${RED}${BOLD}Deleted${NORMAL}"
+  elif [ ! -e "$FILE_PATH" ]; then
+    gf_git_command_with_header 1 diff HEAD -M -- "$FILE_PATH" "$RENAMED_FILE_PATH" | gf_diff_renderer
   else
     # TODO this doesn't work for renames
     gf_git_command_with_header 1 diff HEAD -- "$FILE_PATH" | gf_diff_renderer
