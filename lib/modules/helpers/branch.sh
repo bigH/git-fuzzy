@@ -3,30 +3,45 @@
 gf_helper_branch_menu_content() {
   echo "${RED}$(git branch --show-current)${NORMAL}"
 
-  # locals sorted by last commit
-  GF_BRANCH_LOCAL_BRANCHES="$(git for-each-ref --sort='-committerdate' \
-    --format="$GREEN$BOLD%(refname:short)$NORMAL|$MAGENTA%(committerdate:relative)$NORMAL|$CYAN%(committername)$NORMAL" \
-    refs/heads | \
+  # locals sorted by last checkout
+  echo
+  git --no-pager reflog --decorate=full --pretty="%D|%cr|%an" | \
+    grep -v '^|' | \
+    awk '
+        BEGIN {
+          FS="|"
+        }
+        {
+          split($1, aliases, ", ");
+          for (i in aliases) {
+            if (aliases[i] ~ /^refs\/heads\//) {
+              alias = substr(aliases[i], 12)
+              if (counters[alias]++ == 0) {
+                print \
+                  "'"$ORANGE$BOLD"'" \
+                  alias \
+                  "'"$NORMAL"'" \
+                  "|" \
+                  "'"$MAGENTA"'" \
+                  $2 \
+                  "'"$NORMAL"'" \
+                  "|" \
+                  "'"$CYAN"'" \
+                  $3 \
+                  "'"$NORMAL"'";
+              }
+            }
+          }
+        }
+    ' | \
     column -t -s'|' \
-  )"
 
-  if [ -n "$GF_BRANCH_LOCAL_BRANCHES" ]; then
+  if [ -z "$GF_BRANCH_SKIP_REMOTE_BRANCHES" ]; then
     echo
-    echo "$GF_BRANCH_LOCAL_BRANCHES"
-  fi
-
-  if [ -n "$GF_BRANCH_SKIP_REMOTE_BRANCHES" ]; then
-    # locals sorted by last commit
-    GF_BRANCH_REMOTE_BRANCHES="$(git for-each-ref --sort='-committerdate' \
+    git for-each-ref --sort='-committerdate' \
       --format="$YELLOW$BOLD%(refname:short)$NORMAL|$MAGENTA%(committerdate:relative)$NORMAL|$CYAN%(committername)$NORMAL" \
       refs/remotes | \
-      column -t -s'|' \
-    )"
-
-    if [ -n "$GF_BRANCH_REMOTE_BRANCHES" ]; then
-      echo
-      echo "$GF_BRANCH_REMOTE_BRANCHES"
-    fi
+      column -t -s'|'
   fi
 }
 
@@ -65,11 +80,10 @@ gf_helper_branch_checkout() {
 }
 
 gf_helper_branch_checkout_files() {
-  # TODO currently only diffs
-  if [ -z "$1" ]; then
+  if [ "$#" -eq 0 ]; then
     gf_log_debug "no branch chosen for checkout"
   else
-    git fuzzy diff_checkout "$1"
+    git fuzzy diff_checkout "$@"
   fi
 }
 
