@@ -17,7 +17,8 @@ gf_helper_status_preview_content() {
 
   # NB: git status will quote paths with whitespace. currently that's not supported
 
-  if [ "??" = "$STATUS_CODE" ] || [ "A" = "$STATUS_CODE" ]; then
+  if [ "??" = "$STATUS_CODE" ]; then
+    # new files/dirs get special treatment since `git diff` won't handle them
     if [ -d "$FILE_PATH" ]; then
       # shellcheck disable=2086
       gf_command_with_header 2 $GF_STATUS_DIRECTORY_PREVIEW_COMMAND "$FILE_PATH"
@@ -25,13 +26,10 @@ gf_helper_status_preview_content() {
       # shellcheck disable=2086
       gf_command_with_header 2 $GF_STATUS_FILE_PREVIEW_COMMAND "$FILE_PATH"
     fi
-  elif [ ! -e "$FILE_PATH" ] && [ -z "$RENAMED_FILE_PATH" ]; then
-    echo "\`${CYAN}${FILE_PATH}${NORMAL}\` ${RED}${BOLD}Deleted${NORMAL}"
-  elif [ ! -e "$FILE_PATH" ]; then
+  elif [ ! -e "$FILE_PATH" ] && [ -n "$RENAMED_FILE_PATH" ]; then
     gf_git_command_with_header 1 diff HEAD -M -- "$FILE_PATH" "$RENAMED_FILE_PATH" | gf_diff_renderer
   else
-    # TODO this doesn't work for renames
-    gf_git_command_with_header 1 diff HEAD -- "$FILE_PATH" | gf_diff_renderer
+    gf_git_command_with_header 1 diff HEAD -M -- "$FILE_PATH" | gf_diff_renderer
   fi
 }
 
