@@ -25,6 +25,7 @@ gf_fzf_diff_direct() {
 }
 
 gf_diff_direct() {
+  gf_go_to_git_root_directory
   if ! git diff --quiet "$@"; then
     git fuzzy helper diff_direct_menu_content '' "$@" | gf_fzf_diff_direct "$@"
   else

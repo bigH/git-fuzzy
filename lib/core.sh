@@ -82,6 +82,17 @@ gf_merge_base(){
   git merge-base HEAD "$@"
 }
 
+gf_git_root_directory() {
+  git rev-parse --show-toplevel
+}
+
+gf_go_to_git_root_directory() {
+  local git_root_directory
+  git_root_directory="$(gf_git_root_directory)"
+  gf_log_debug "going to git root at ${git_root_directory} from $(pwd)"
+  cd "${git_root_directory}"
+}
+
 gf_diff_renderer() {
   if [ -n "$GF_PREFERRED_PAGER" ]; then
     if [ -n "$FZF_PREVIEW_COLUMNS" ]; then

@@ -28,6 +28,7 @@ gf_fzf_diff_checkout() {
 
 gf_diff_checkout() {
   gf_snapshot "diff-checkout"
+  gf_go_to_git_root_directory
   MERGE_BASE="$(gf_merge_base "$1")"
   git fuzzy helper diff_direct_menu_content '' "$1" "$MERGE_BASE" | gf_fzf_diff_checkout "$1" "$MERGE_BASE"
 }
