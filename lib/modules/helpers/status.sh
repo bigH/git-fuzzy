@@ -3,6 +3,8 @@
 GF_STATUS_DIRECTORY_PREVIEW_COMMAND='ls -l --color=always'
 if type exa >/dev/null 2>&1; then
   GF_STATUS_DIRECTORY_PREVIEW_COMMAND='exa -l --color=always'
+elif type lsd >/dev/null 2>&1; then
+  GF_STATUS_DIRECTORY_PREVIEW_COMMAND='lsd -l --color=always'
 fi
 
 GF_STATUS_FILE_PREVIEW_COMMAND='cat'
