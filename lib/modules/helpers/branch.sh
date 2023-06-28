@@ -87,6 +87,14 @@ gf_helper_branch_checkout_files() {
   fi
 }
 
+gf_helper_branch_checkout_patch() {
+  if [ "$#" -eq 0 ]; then
+    gf_log_debug "no branch chosen for checkout"
+  else
+    git fuzzy diff_patch "$@"
+  fi
+}
+
 gf_helper_branch_delete() {
   if [ -z "$1" ]; then
     gf_log_debug "no branch chosen for deletion"

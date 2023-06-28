@@ -46,6 +46,10 @@ lowercase() {
   echo "$1" | tr '[:upper:]' '[:lower:]'
 }
 
+join_lines_with_commas() {
+  paste -s -d"," -
+}
+
 join_lines_quoted() {
   IFS=$'\r\n' eval 'LINES_TO_BE_QUOTED=($(cat -))'
 

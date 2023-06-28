@@ -33,8 +33,9 @@ git_fuzzy_dir="$script_dir/.."
 . "$git_fuzzy_dir/lib/modules/main.sh"
 
 . "$git_fuzzy_dir/lib/modules/branch.sh"
-. "$git_fuzzy_dir/lib/modules/diff-checkout.sh"
 . "$git_fuzzy_dir/lib/modules/diff-direct.sh"
+. "$git_fuzzy_dir/lib/modules/diff-checkout.sh"
+. "$git_fuzzy_dir/lib/modules/diff-patch-checkout.sh"
 . "$git_fuzzy_dir/lib/modules/diff.sh"
 . "$git_fuzzy_dir/lib/modules/log.sh"
 . "$git_fuzzy_dir/lib/modules/reflog.sh"
@@ -107,6 +108,8 @@ gf_run() {
       FORCE_INTERACTIVE="YES"
       shift
     fi
+
+    COMMAND="$(echo "$COMMAND" | tr "-" "_")"
 
     PARAMETERS_QUOTED="$(quote_params "$@")"
     INTERACTIVE_FUNC="gf_${COMMAND}"

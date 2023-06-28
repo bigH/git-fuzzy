@@ -11,11 +11,20 @@ function new_array(A) {
   split("", A);
 }
 
+function contains_string_version_of(A, E) {
+  for (i in A) {
+    if (A[i] == E"") {
+      return 1;
+    }
+  }
+  return 0
+}
+
 # hunk management
 
 function new_hunk() {
   if (length(hunk) > 0) {
-    if (hunk_number == desired_hunk_number) {
+    if (contains_string_version_of(desired_hunk_numbers_tokenized, hunk_number)) {
       for (preamble_index = 0; preamble_index < length(preamble); preamble_index ++) {
         print preamble[preamble_index];
       }
@@ -30,6 +39,7 @@ function new_hunk() {
 }
 
 BEGIN {
+  split(desired_hunk_numbers, desired_hunk_numbers_tokenized, ",")
   hunk_number = 0;
 }
 
@@ -58,6 +68,7 @@ BEGIN {
 
 # treatment for every line
 {
+  print $0
   if (in_hunk) {
     push(hunk, $0);
   }

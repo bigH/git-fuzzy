@@ -4,8 +4,9 @@
 
 . "$git_fuzzy_dir/lib/modules/helpers/branch.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/diff.sh"
-. "$git_fuzzy_dir/lib/modules/helpers/diff-checkout.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/diff-direct.sh"
+. "$git_fuzzy_dir/lib/modules/helpers/diff-checkout.sh"
+. "$git_fuzzy_dir/lib/modules/helpers/diff-patch-checkout.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/log.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/reflog.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/status.sh"
