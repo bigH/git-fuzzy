@@ -43,6 +43,19 @@ gf_helper_status_add() {
   gf_command_logged git add -- "$@"
 }
 
+gf_helper_status_add_patch() {
+  if [ "$#" = 0 ]; then
+    gf_log_error 'tried to git add --patch with no file(s)'
+  else
+    gf_interactive_command_logged git add --patch -- "$@" < /dev/tty
+  fi
+
+  # if there's more to commit, loop right back into the status view
+  if [ -n "$(git status -s)" ]; then
+    gf_interactive_command_logged git fuzzy status
+  fi
+}
+
 gf_helper_status_reset() {
   gf_command_logged git reset -- "$@"
 }
@@ -71,6 +84,8 @@ gf_helper_status_edit() {
 gf_helper_status_commit() {
   # shellcheck disable=2086
   gf_interactive_command_logged git commit
+
+  # if there's more to commit, loop right back into the status view
   if [ -n "$(git status -s)" ]; then
     gf_interactive_command_logged git fuzzy status
   fi
