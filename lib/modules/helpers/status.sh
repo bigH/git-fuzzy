@@ -64,7 +64,7 @@ gf_helper_status_edit() {
     gf_log_error 'tried to EDIT in status with no file(s)'
   else
     # shellcheck disable=2086
-    gf_interactive_command_logged "$EDITOR" $GF_EDITOR_ARGS "$@"
+    gf_interactive_command_logged "$EDITOR" $GF_EDITOR_ARGS "$@" < /dev/tty
   fi
 }
 
