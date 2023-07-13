@@ -43,6 +43,10 @@ gf_helper_status_add() {
   gf_command_logged git add -- "$@"
 }
 
+gf_helper_status_amend() {
+  gf_command_logged commit --amend --reuse-message=HEAD
+}
+
 gf_helper_status_add_patch() {
   if [ "$#" = 0 ]; then
     gf_log_error 'tried to git add --patch with no file(s)'
