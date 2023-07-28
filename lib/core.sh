@@ -150,14 +150,13 @@ gf_fzf() {
 }
 
 gf_fzf_one() {
-  if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
-    gf_log_command_string "fzf +m --ansi --no-sort --no-info \
+  local gf_command="fzf +m --ansi --no-sort --no-info \
             $(preview_window_settings) \
             $(quote_params "$@")"
+  if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
+    gf_log_command_string "$gf_command"
   fi
-  eval "fzf +m --ansi --no-sort --no-info \
-          $(preview_window_settings) \
-          $(quote_params "$@")"
+  eval "$gf_command"
 }
 
 gf_command_with_header() {
