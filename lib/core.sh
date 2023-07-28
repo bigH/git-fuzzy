@@ -6,20 +6,29 @@ GIT_FUZZY_SELECT_NONE_KEY="${GIT_FUZZY_SELECT_NONE_KEY:-Alt-D}"
 if [ -z "$GF_FZF_DEFAULTS_SET" ]; then
   export GF_FZF_DEFAULTS_SET="YES"
 
-  export FZF_DEFAULT_OPTS="\
-    $FZF_DEFAULT_OPTS \
-    --border \
-    --layout=reverse \
-    --bind 'ctrl-space:toggle-preview' \
-    --bind 'ctrl-j:down' \
-    --bind 'ctrl-k:up' \
-    --bind 'ctrl-d:half-page-down' \
-    --bind 'ctrl-u:half-page-up' \
-    --bind 'ctrl-s:toggle-sort' \
-    --bind 'ctrl-e:preview-down' \
-    --bind 'ctrl-y:preview-up' \
-    --bind 'change:top' \
-    --no-height"
+  # override the default global fzf configuration options to fit the git-fuzzy use case
+  # allow the user to override the global fzf defaults by setting GIT_FUZZY_FZF_DEFAULT_OPTS
+
+  if [ -z "$GIT_FUZZY_FZF_DEFAULT_OPTS" ]; then
+    export FZF_DEFAULT_OPTS="\
+      $FZF_DEFAULT_OPTS \
+      --border \
+      --layout=reverse \
+      --bind 'ctrl-space:toggle-preview' \
+      --bind 'ctrl-j:down' \
+      --bind 'ctrl-k:up' \
+      --bind 'ctrl-d:half-page-down' \
+      --bind 'ctrl-u:half-page-up' \
+      --bind 'ctrl-s:toggle-sort' \
+      --bind 'ctrl-e:preview-down' \
+      --bind 'ctrl-y:preview-up' \
+      --bind 'change:top' \
+      --no-height"
+  else
+    export FZF_DEFAULT_OPTS="\
+      $FZF_DEFAULT_OPTS \
+      $GIT_FUZZY_FZF_DEFAULT_OPTS"
+  fi
 
   export FZF_DEFAULT_OPTS_MULTI="\
     $FZF_DEFAULT_OPTS_MULTI \
