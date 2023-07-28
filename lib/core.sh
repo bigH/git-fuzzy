@@ -128,16 +128,16 @@ gf_interactive_command_logged() {
 }
 
 gf_fzf() {
+  local gf_command="fzf --ansi --no-sort --no-info --multi \
+    $FZF_DEFAULT_OPTS_MULTI \
+    $(preview_window_settings) \
+    $(quote_params "$@")"
+
   if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
-    gf_log_command_string "fzf --ansi --no-sort --no-info --multi \
-            $FZF_DEFAULT_OPTS_MULTI \
-            $(preview_window_settings) \
-            $(quote_params "$@")"
+    gf_log_command_string "$gf_command"
   fi
-  eval "fzf --ansi --no-sort --no-info --multi \
-          $FZF_DEFAULT_OPTS_MULTI \
-          $(preview_window_settings) \
-          $(quote_params "$@")"
+
+  eval "$gf_command"
 }
 
 gf_fzf_one() {
