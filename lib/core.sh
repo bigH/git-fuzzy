@@ -6,20 +6,29 @@ GIT_FUZZY_SELECT_NONE_KEY="${GIT_FUZZY_SELECT_NONE_KEY:-Alt-D}"
 if [ -z "$GF_FZF_DEFAULTS_SET" ]; then
   export GF_FZF_DEFAULTS_SET="YES"
 
-  export FZF_DEFAULT_OPTS="\
-    $FZF_DEFAULT_OPTS \
-    --border \
-    --layout=reverse \
-    --bind 'ctrl-space:toggle-preview' \
-    --bind 'ctrl-j:down' \
-    --bind 'ctrl-k:up' \
-    --bind 'ctrl-d:half-page-down' \
-    --bind 'ctrl-u:half-page-up' \
-    --bind 'ctrl-s:toggle-sort' \
-    --bind 'ctrl-e:preview-down' \
-    --bind 'ctrl-y:preview-up' \
-    --bind 'change:top' \
-    --no-height"
+  # override the default global fzf configuration options to fit the git-fuzzy use case
+  # allow the user to override the global fzf defaults by setting GIT_FUZZY_FZF_DEFAULT_OPTS
+
+  if [ -z "$GIT_FUZZY_FZF_DEFAULT_OPTS" ]; then
+    export FZF_DEFAULT_OPTS="\
+      $FZF_DEFAULT_OPTS \
+      --border \
+      --layout=reverse \
+      --bind 'ctrl-space:toggle-preview' \
+      --bind 'ctrl-j:down' \
+      --bind 'ctrl-k:up' \
+      --bind 'ctrl-d:half-page-down' \
+      --bind 'ctrl-u:half-page-up' \
+      --bind 'ctrl-s:toggle-sort' \
+      --bind 'ctrl-e:preview-down' \
+      --bind 'ctrl-y:preview-up' \
+      --bind 'change:top' \
+      --no-height"
+  else
+    export FZF_DEFAULT_OPTS="\
+      $FZF_DEFAULT_OPTS \
+      $GIT_FUZZY_FZF_DEFAULT_OPTS"
+  fi
 
   export FZF_DEFAULT_OPTS_MULTI="\
     $FZF_DEFAULT_OPTS_MULTI \
@@ -128,27 +137,26 @@ gf_interactive_command_logged() {
 }
 
 gf_fzf() {
+  local gf_command="fzf --ansi --no-sort --no-info --multi \
+    $FZF_DEFAULT_OPTS_MULTI \
+    $(preview_window_settings) \
+    $(quote_params "$@")"
+
   if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
-    gf_log_command_string "fzf --ansi --no-sort --no-info --multi \
-            $FZF_DEFAULT_OPTS_MULTI \
-            $(preview_window_settings) \
-            $(quote_params "$@")"
+    gf_log_command_string "$gf_command"
   fi
-  eval "fzf --ansi --no-sort --no-info --multi \
-          $FZF_DEFAULT_OPTS_MULTI \
-          $(preview_window_settings) \
-          $(quote_params "$@")"
+
+  eval "$gf_command"
 }
 
 gf_fzf_one() {
-  if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
-    gf_log_command_string "fzf +m --ansi --no-sort --no-info \
+  local gf_command="fzf +m --ansi --no-sort --no-info \
             $(preview_window_settings) \
             $(quote_params "$@")"
+  if [ -n "$GF_COMMAND_FZF_DEBUG_MODE" ]; then
+    gf_log_command_string "$gf_command"
   fi
-  eval "fzf +m --ansi --no-sort --no-info \
-          $(preview_window_settings) \
-          $(quote_params "$@")"
+  eval "$gf_command"
 }
 
 gf_command_with_header() {

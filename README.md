@@ -225,6 +225,8 @@ If you are using nano as your default editor, you need to pass `/dev/tty` as std
 git config --global core.editor 'nano < /dev/tty'
 ```
 
+`git fuzzy` appends a static list of defaults to your `FZF_DEFAULT_OPTIONS`. If you want to use your own set of `git fuzzy`-specific fzf defaults, you can set `GIT_FUZZY_FZF_DEFAULT_OPTS` which will be used in place. Note that `FZF_DEFAULT_OPTS` is merged with this variable.
+
 ## Backups
 
 `git fuzzy` takes a backup of your current sha, branch, index diff, unstaged diff and new files. This is helpful in case you take an action hastily (like discarding a file you meant to stage) or there is a bug. If you'd like snapshots, simply set the variable below. I have the following entry in my `.zshrc` (with corresponding `.gitignore_global`):
