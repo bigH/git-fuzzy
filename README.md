@@ -295,3 +295,9 @@ export GF_COMMAND_LOG_OUTPUT="YES"
 # log internal commands (pretty noisy)
 export GF_INTERNAL_COMMAND_DEBUG_MODE="YES"
 ```
+
+Or, log everything:
+
+```
+GF_DEBUG_MODE="YES" GF_COMMAND_DEBUG_MODE="YES" GF_COMMAND_FZF_DEBUG_MODE="YES" GF_COMMAND_LOG_OUTPUT="YES" GF_INTERNAL_COMMAND_DEBUG_MODE="YES" git fuzzy
+```
