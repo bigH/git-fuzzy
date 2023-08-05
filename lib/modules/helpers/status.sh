@@ -44,7 +44,7 @@ gf_helper_status_add() {
 }
 
 gf_helper_status_amend() {
-  gf_command_logged commit --amend --reuse-message=HEAD
+  gf_command_logged git commit --amend --reuse-message=HEAD
 }
 
 gf_helper_status_add_patch() {
