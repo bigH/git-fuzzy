@@ -116,7 +116,7 @@ For the ideal experience, install the following optional tools to your `PATH`:
 
 - [`delta`](https://github.com/dandavison/delta) or [`diff-so-fancy`](https://github.com/so-fancy/diff-so-fancy) for nicer looking diffs
 - [`bat`](https://github.com/sharkdp/bat) for a colorized alternative to `cat`
-- [`exa`](https://github.com/ogham/exa) for a `git`-enabled, and better colorized alternative to `ls`
+- [`eza`](https://github.com/eza-community/eza) for a `git`-enabled, and better colorized alternative to `ls`
 
 `git fuzzy diff` uses `grep` to highlight your search term. The default may clash with `diff` formatting or just not be to your liking. You can configure `git fuzzy` without affecting the global setting.
 
