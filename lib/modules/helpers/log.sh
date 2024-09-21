@@ -1,17 +1,32 @@
 #!/usr/bin/env bash
 
-# get the first token by `|`
+# `*` means use both parts, otherwise `log` gets only the first part
 gf_helper_log_log_query() {
-  echo "$1" | cut -d'|' -f1
+  if [ "${1:0:1}" = '*' ]; then
+    echo "$(query_part_one "$1") $(query_part_two "$1")"
+  else
+    query_part_one "$1"
+  fi
 }
 
-# get the _last_ token by `|`
-# NB: this supports using the same query for both chunks
+# `#` means use both parts, otherwise `diff` gets only the first part
 gf_helper_log_diff_query() {
-  echo "$1" | rev | cut -d'|' -f1 | rev
+  if [ "${1:0:1}" = '#' ]; then
+    echo "$(query_part_one "$1") $(query_part_two "$1")"
+  else
+    query_part_two "$1"
+  fi
 }
 
-# TODO faithfully pass `log` params to `log_menu_contents` (e.g. branch name)
+query_part_one() {
+  echo "$1" | sed -E 's/[#*]?([^|]*)([|](.*))?/\1/'
+}
+
+query_part_two() {
+  echo "$1" | sed -E 's/[#*]?(([^|]*)[|])?(.*)/\3/'
+}
+
+# TODO faithfully pass `log` params to `log_menu_content` (e.g. branch name)
 gf_helper_log_menu_content() {
   QUERY="$(git fuzzy helper log_log_query "$1")"
   shift
