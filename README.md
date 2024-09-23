@@ -16,9 +16,9 @@ Search the log and corresponding diff at once. Notice that when you use `|` the 
 
 ## Installing
 
-`fzf` is **required**:
 ```bash
-brew install fzf
+brew tap AppleBoiy/git-fuzzy
+brew install git-fuzzy
 ```
 
 ### Bash
