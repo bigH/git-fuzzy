@@ -46,11 +46,11 @@ fi
   gf_fzf_one -m \
              --header "$BRANCH_HEADER" \
              --bind "$BRANCH_CHECKOUT_BINDING" \
-             --bind "$(lowercase "$GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY")"':execute(git fuzzy helper branch_checkout_files {1})' \
+             --bind "$(lowercase "$GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY"):execute(git fuzzy helper branch_checkout_files {1})" \
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_DELETE_BRANCH_KEY"):$GF_BRANCH_DELETE_BINDING" \
-             --bind "$(lowercase "$GIT_FUZZY_BRANCH_COMMIT_LOG_KEY")"':execute(git fuzzy log {1})' \
-             --bind "$(lowercase "$GIT_FUZZY_BRANCH_WORKING_COPY_KEY")"':execute(git fuzzy diff {1})' \
-             --bind "$(lowercase "$GIT_FUZZY_BRANCH_MERGE_BASE_KEY")"':execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})' \
+             --bind "$(lowercase "$GIT_FUZZY_BRANCH_COMMIT_LOG_KEY"):execute(git fuzzy log {1})" \
+             --bind "$(lowercase "$GIT_FUZZY_BRANCH_WORKING_COPY_KEY"):execute(git fuzzy diff {1})" \
+             --bind "$(lowercase "$GIT_FUZZY_BRANCH_MERGE_BASE_KEY"):execute(git fuzzy diff \"\$(git merge-base $GF_BASE_BRANCH {1})\" {1})" \
              --preview 'git fuzzy helper branch_preview_content {1} {+1}' | \
     awk '{ print $1 }'
 }
