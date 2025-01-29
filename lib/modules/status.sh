@@ -20,11 +20,11 @@ Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_STATUS_HEADER=''
-fi
-
 gf_fzf_status() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_STATUS_HEADER=''
+  fi
+
   RELOAD="reload:git fuzzy helper status_menu_content"
 
   gf_fzf -m --header "$GF_STATUS_HEADER" \

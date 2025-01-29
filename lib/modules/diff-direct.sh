@@ -6,11 +6,11 @@ GF_DIFF_DIRECT_HEADER='
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_DIFF_DIRECT_HEADER=''
-fi
-
 gf_fzf_diff_direct() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_DIFF_DIRECT_HEADER=''
+  fi
+
   PARAMETERS_QUOTED="$(quote_params "$@")"
 
   # shellcheck disable=2016

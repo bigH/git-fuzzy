@@ -15,11 +15,11 @@ Select an entry with '"${WHITE}<Tab>${NORMAL}"' to use as basis for comparison i
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_REFLOG_HEADER=''
-fi
-
 gf_fzf_reflog() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_REFLOG_HEADER=''
+  fi
+
   PARAMS_FOR_SUBSTITUTION=''
   if [ "$#" -gt 0 ]; then
     PARAMS_FOR_SUBSTITUTION="$(quote_params "$@")"

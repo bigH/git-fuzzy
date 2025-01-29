@@ -9,11 +9,11 @@ GF_DIFF_CHECKOUT_HEADER='
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_DIFF_CHECKOUT_HEADER=''
-fi
-
 gf_fzf_diff_checkout() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_DIFF_CHECKOUT_HEADER=''
+  fi
+
   # shellcheck disable=2016
   RELOAD_COMMAND="git fuzzy helper diff_direct_menu_content {q} '$1' '$2'"
   PREVIEW_COMMAND="git fuzzy helper diff_direct_preview_content {q} {} '$1'"

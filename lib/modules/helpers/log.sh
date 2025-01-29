@@ -101,3 +101,56 @@ gf_helper_log_open_diff() {
     fi
   fi
 }
+
+gf_helper_log_open_pr() {
+  gf_helper_log_open_pr_async "$@" &
+}
+
+gf_helper_log_open_pr_async() {
+  if [ "$#" -eq 0 ]; then
+    gf_log_error "nothing to show (empty line)"
+    return 1
+  fi
+
+  if [ "$#" -gt 1 ]; then
+    # NB: This is weird, but if you have your cursor on something, but have selected
+    # some commit(s), we want to ignore the cursored line and only open the PRs for
+    # the selected commit(s). This is because when you `tab` to select a commit,
+    # the cursor moves to the next line, meaning you naturally end up with a `$1`
+    # that you don't want.
+    shift
+  fi
+
+  while [ "$#" -gt 0 ]; do
+    SELECTED_LOG_LINE="$1"
+    gf_log_debug "opening PR for line: $SELECTED_LOG_LINE"
+
+    REF="$(extract_commit_hash_from_first_line "$SELECTED_LOG_LINE")"
+    if [ -z "$REF" ]; then
+      gf_log_error "nothing to show (no commit found on line)"
+      return 1
+    fi
+
+    # Get the PR number from the commit message
+    PR_NUMBER=$(git log -1 --format=%B "$REF" | grep -oE '#[0-9]+' | head -n1 | tr -d '#')
+    if [ -z "$PR_NUMBER" ]; then
+      gf_log_error "No PR number found in commit message"
+      return 1
+    fi
+
+    # Get the GitHub repository URL
+    REPO_URL=$(git config --get remote.origin.url | sed -e 's/\.git$//' -e 's/git@github.com:/https:\/\/github.com\//')
+    if [ -z "$REPO_URL" ]; then
+      gf_log_error "Could not determine repository URL"
+      return 1
+    fi
+
+    PR_URL="$REPO_URL/pull/$PR_NUMBER"
+
+    # Open the URL using the configured opener
+    gf_log_command_string "$GF_WEB_OPEN '$PR_URL'"
+    eval "$GF_WEB_OPEN '$PR_URL'"
+
+    shift
+  done
+}

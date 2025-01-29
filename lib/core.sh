@@ -87,6 +87,14 @@ gf_is_in_git_repo() {
   git -C . rev-parse > /dev/null 2>&1
 }
 
+gf_git_has_remotes() {
+  test "$(git remote -v | wc -l)" -gt 0
+}
+
+gf_is_github_repo() {
+  gf_git_has_remotes && ! git remote -v | grep -vq 'github.com'
+}
+
 gf_merge_base(){
   git merge-base HEAD "$@"
 }

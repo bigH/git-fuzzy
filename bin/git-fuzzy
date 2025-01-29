@@ -59,6 +59,14 @@ if ! gf_is_in_git_repo; then
   exit 1
 fi
 
+if gf_is_github_repo; then
+  gf_log_debug "in a GitHub repo; will display GitHub-specific options"
+  export IS_GITHUB_REPO="YES"
+else
+  gf_log_debug "not in a GitHub repo; will NOT display GitHub-specific options"
+  export IS_GITHUB_REPO=""
+fi
+
 if ! type fzf >/dev/null 2>&1; then
   # shellcheck disable=2016
   gf_log_error '`fzf` not found; it is required for `git fuzzy` to work.'
@@ -78,11 +86,11 @@ if [ -z "${HUB_AVAILABLE+X}" ]; then
   if type hub >/dev/null 2>&1; then
     export HUB_AVAILABLE="YES"
     export GIT_CMD="hub"
-    gf_log_debug '`hub` found, enabling GitHub support.'
+    gf_log_debug '`hub` found; will use it instead of `git`.'
   else
     export HUB_AVAILABLE=""
     export GIT_CMD="git"
-    gf_log_debug '`hub` not found, disabling GitHub support.'
+    gf_log_debug '`hub` not found; will use `git`.'
   fi
 fi
 
