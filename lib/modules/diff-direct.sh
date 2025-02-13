@@ -21,6 +21,8 @@ gf_fzf_diff_direct() {
     --header-lines=2 \
     --header "$GF_DIFF_DIRECT_HEADER" \
     --preview "$PREVIEW_COMMAND" \
+    --bind "click-header:reload(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "backward-eof:reload(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "change:reload($RELOAD_COMMAND)"
 }
 

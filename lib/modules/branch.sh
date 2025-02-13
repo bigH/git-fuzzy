@@ -45,6 +45,8 @@ fi
   # shellcheck disable=2046,2016,2090,2086
   gf_fzf_one -m \
              --header "$BRANCH_HEADER" \
+             --bind 'click-header:reload(git fuzzy helper branch_menu_content)' \
+             --bind 'backward-eof:reload(git fuzzy helper branch_menu_content)' \
              --bind "$BRANCH_CHECKOUT_BINDING" \
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY")"':execute(git fuzzy helper branch_checkout_files {1})' \
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_DELETE_BRANCH_KEY"):$GF_BRANCH_DELETE_BINDING" \

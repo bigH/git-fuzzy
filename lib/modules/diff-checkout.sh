@@ -22,6 +22,8 @@ gf_fzf_diff_checkout() {
     --header-lines=2 \
     --header "$GF_DIFF_CHECKOUT_HEADER" \
     --preview "$PREVIEW_COMMAND" \
+    --bind "click-header:reload(git fuzzy helper diff_direct_menu_content {q} '$1' '$2')" \
+    --bind "backward-eof:reload(git fuzzy helper diff_direct_menu_content {q} '$1' '$2')" \
     --bind "change:reload($RELOAD_COMMAND)" \
     --bind "enter:execute-silent(git fuzzy helper diff_checkout_file '$1' {+})+down"
 }

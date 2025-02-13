@@ -32,6 +32,8 @@ gf_fzf_log() {
     --header-lines=2 \
     --header "$GF_LOG_HEADER" \
     --preview 'git fuzzy helper log_preview_content {..} {q} {+..}' \
+    --bind "click-header:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "backward-eof:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "change:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_COMMIT_KEY"):execute(git fuzzy helper log_open_diff commit {..})" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_WORKING_COPY_KEY"):execute(git fuzzy helper log_open_diff working_copy {..})" \

@@ -23,6 +23,8 @@ gf_fzf_stash() {
     --header-lines=2 \
     --header "$GF_STASH_HEADER" \
     --preview 'git fuzzy helper stash_preview_content {1}' \
+    --bind 'click-header:reload(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
+    --bind 'backward-eof:reload(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
     --bind "$(lowercase "$GIT_FUZZY_DROP_KEY"):execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)" \
     --bind "$(lowercase "$GIT_FUZZY_POP_KEY"):execute(git fuzzy helper stash_pop {1})+reload(git fuzzy helper stash_menu_content)" \
     --bind "$(lowercase "$GIT_FUZZY_APPLY_KEY"):execute(git fuzzy helper stash_apply {1})+reload(git fuzzy helper stash_menu_content)"
@@ -30,5 +32,5 @@ gf_fzf_stash() {
 
 gf_stash() {
   # NB: first parameter is the "query", which is empty right now
-  git fuzzy helper stash_menu_content "$@" | gf_fzf_stash
+  git fuzzy helper stash_menu_content "$@" | gf_fzf_stash "$@"
 }
