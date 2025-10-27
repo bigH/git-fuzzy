@@ -34,6 +34,7 @@ gf_fzf_reflog() {
     --bind "change:reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "click-header:reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "backward-eof:reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "focus:reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "$(lowercase "$GIT_FUZZY_REFLOG_COMMIT_KEY"):execute(git fuzzy diff {1}^ {1})" \
     --bind "$(lowercase "$GIT_FUZZY_REFLOG_WORKING_COPY_KEY"):execute(git fuzzy diff {1})" \
     --bind "$(lowercase "$GIT_FUZZY_REFLOG_MERGE_BASE_KEY"):"'execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})'

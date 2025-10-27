@@ -25,6 +25,7 @@ gf_fzf_diff_select() {
     --preview "$GF_DIFF_PREVIEW" \
     --bind 'click-header:reload(git fuzzy helper diff_menu_content)' \
     --bind 'backward-eof:reload(git fuzzy helper diff_menu_content)' \
+    --bind 'focus:reload(git fuzzy helper diff_menu_content)' \
     --bind 'enter:execute([ {1} != "nothing" ] && git fuzzy helper diff_select {+2})'
 }
 

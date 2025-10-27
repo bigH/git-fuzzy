@@ -25,6 +25,7 @@ gf_fzf_stash() {
     --preview 'git fuzzy helper stash_preview_content {1}' \
     --bind 'click-header:reload(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
     --bind 'backward-eof:reload(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
+    --bind 'focus:reload(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
     --bind "$(lowercase "$GIT_FUZZY_DROP_KEY"):execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)" \
     --bind "$(lowercase "$GIT_FUZZY_POP_KEY"):execute(git fuzzy helper stash_pop {1})+reload(git fuzzy helper stash_menu_content)" \
     --bind "$(lowercase "$GIT_FUZZY_APPLY_KEY"):execute(git fuzzy helper stash_apply {1})+reload(git fuzzy helper stash_menu_content)"

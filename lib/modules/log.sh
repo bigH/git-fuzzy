@@ -7,8 +7,8 @@ GIT_FUZZY_LOG_COMMIT_KEY="${GIT_FUZZY_LOG_COMMIT_KEY:-Alt-D}"
 # shellcheck disable=2016
 GF_LOG_HEADER='
 '"${YELLOW}|${NORMAL} to split CLI args for ${MAGENTA}git log${NORMAL} vs ${MAGENTA}git diff${NORMAL}         ${WHITE}Enter${NORMAL} to ${GREEN}PRINT SHA(s)${NORMAL}"'
-'"${YELLOW}*${NORMAL} as prefix to send all content to ${MAGENTA}git log${NORMAL}          ${WHITE}<Tab>${NORMAL} to ${GREEN}SELECT SHA${NORMAL} for ${MAGENTA}diff${NORMAL}"'
-'"${YELLOW}#${NORMAL} as prefix to send all content to ${MAGENTA}git diff${NORMAL}               ${GRAY}(cannot select >1 SHA)${NORMAL}"'
+'"${YELLOW}*${NORMAL} as prefix to send all parameters to ${MAGENTA}git log${NORMAL}       ${WHITE}<Tab>${NORMAL} to ${GREEN}SELECT SHA${NORMAL} for ${MAGENTA}diff${NORMAL}"'
+'"${YELLOW}#${NORMAL} as prefix to send all parameters to ${MAGENTA}git diff${NORMAL}            ${GRAY}(cannot select >1 SHA)${NORMAL}"'
 
   '"${YELLOW}${BOLD}∆${NORMAL} ${GREEN}working copy${NORMAL}  ${WHITE}$GIT_FUZZY_LOG_WORKING_COPY_KEY${NORMAL}    ${GRAY}-- search messages${NORMAL}  ${MAGENTA}--grep=Foo${NORMAL}"'
     '"${YELLOW}${BOLD}∆${NORMAL} ${GREEN}merge-base${NORMAL}  ${WHITE}$GIT_FUZZY_MERGE_BASE_KEY${NORMAL}        ${GRAY}-- search patch${NORMAL}  ${MAGENTA}-G 'Foo'${NORMAL}"'
@@ -34,6 +34,7 @@ gf_fzf_log() {
     --preview 'git fuzzy helper log_preview_content {..} {q} {+..}' \
     --bind "click-header:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "backward-eof:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "focus:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "change:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_COMMIT_KEY"):execute(git fuzzy helper log_open_diff commit {..})" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_WORKING_COPY_KEY"):execute(git fuzzy helper log_open_diff working_copy {..})" \
