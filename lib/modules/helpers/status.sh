@@ -38,7 +38,12 @@ gf_helper_status_preview_content() {
 }
 
 gf_helper_status_menu_content() {
-  gf_git_command_with_header 2 status --short
+  # Use a custom command instead of gf_git_command_with_header to avoid color codes
+  # that would break field parsing in the status interpreter
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "$GIT_CMD status --short" "$NORMAL"
+  echo
+  echo
+  "$GIT_CMD" -c color.status=false status --short
 }
 
 gf_helper_status_add() {
