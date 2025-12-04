@@ -34,7 +34,6 @@ gf_fzf_status() {
             --preview 'git fuzzy helper status_preview_content {1} {2} {4}' \
             --bind 'click-header:reload(git fuzzy helper status_menu_content)' \
             --bind 'backward-eof:reload(git fuzzy helper status_menu_content)' \
-            --bind 'focus:reload(git fuzzy helper status_menu_content)' \
             --bind "$(lowercase "$GIT_FUZZY_STATUS_AMEND_KEY"):execute-silent(git fuzzy helper status_amend {+2..})+down+$RELOAD" \
             --bind "$(lowercase "$GIT_FUZZY_STATUS_ADD_KEY"):execute-silent(git fuzzy helper status_add {+2..})+down+$RELOAD" \
             --bind "$(lowercase "$GIT_FUZZY_STATUS_RESET_KEY"):execute-silent(git fuzzy helper status_reset {+2..})+down+$RELOAD" \
