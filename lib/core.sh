@@ -36,6 +36,9 @@ if [ -z "$GF_FZF_DEFAULTS_SET" ]; then
     --bind \"$(lowercase "$GIT_FUZZY_SELECT_ALL_KEY"):select-all\""
 fi
 
+# Prevent background read-only git operations (like git status in the preview) from
+# taking optional locks and conflicting with explicit operations like git add.
+export GIT_OPTIONAL_LOCKS=0
 
 GF_BC_STL='
 define min(a, b) { if (a < b) return a else return b }
