@@ -177,18 +177,18 @@ gf_command_with_header() {
 }
 
 gf_git_command() {
-  "$GIT_CMD" -c color.ui=always "$@"
+  git -c color.ui=always "$@"
 }
 
 gf_git_command_with_header() {
   NUM="$1"
   shift
-  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "$GIT_CMD $(quote_params "$@")" "$NORMAL"
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "git $(quote_params "$@")" "$NORMAL"
   # shellcheck disable=2034
   for i in $(seq 1 "$NUM"); do
     echo
   done
-  "$GIT_CMD" -c color.ui=always "$@"
+  git -c color.ui=always "$@"
 }
 
 gf_git_command_with_header_default_parameters() {
@@ -198,13 +198,13 @@ gf_git_command_with_header_default_parameters() {
   shift
   SUB_COMMAND="$1"
   shift
-  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "$GIT_CMD $SUB_COMMAND $(quote_params "$@")" "$NORMAL"
+  printf "%s" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "git $SUB_COMMAND $(quote_params "$@")" "$NORMAL"
   # shellcheck disable=2034
   for i in $(seq 0 "$NUM"); do
     [ "$i" -gt 0 ] && echo
   done
-  gf_log_command_string "$GIT_CMD -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
-  eval "$GIT_CMD -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
+  gf_log_command_string "git -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
+  eval "git -c color.ui=always '$SUB_COMMAND' $DEFAULT_SUBCOMMAND_PARAMETERS $(quote_params "$@")"
 }
 
 gf_quit() {

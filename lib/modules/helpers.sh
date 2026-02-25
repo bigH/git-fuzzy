@@ -11,4 +11,4 @@
 . "$git_fuzzy_dir/lib/modules/helpers/status.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/stash.sh"
 
-. "$git_fuzzy_dir/lib/modules/helpers/hub/pr.sh"
+. "$git_fuzzy_dir/lib/modules/helpers/gh/pr.sh"

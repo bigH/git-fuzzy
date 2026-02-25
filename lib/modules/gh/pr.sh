@@ -23,20 +23,20 @@ gf_fzf_pr_select() {
 }
 
 gf_pr() {
-  if [ "$HUB_AVAILABLE" = 'YES' ]; then
+  if [ "$GH_AVAILABLE" = 'YES' ]; then
     gf_command_logged git fetch "$GF_BASE_REMOTE"
     if [ $# -eq 0 ]; then
       git fuzzy helper pr_menu_content | gf_fzf_pr_select
     elif [[ "$1" =~ [0-9]+ ]]; then
-      DIFF_PARAMS="$(hub pr show --format='%sB %sH' "$1")"
-      if [ -z "$DIFF_PARAMS" ]; then
+      DIFF_PARAMS="$(gh pr view "$1" --json baseRefName,headRefName --jq '"\(.baseRefName) \(.headRefName)"')"
+      if [ -n "$DIFF_PARAMS" ]; then
         eval "git fuzzy diff $DIFF_PARAMS"
       fi
     else
       gf_log_error '`git fuzzy pr` only accepts one numeric parameter, the PR number'
     fi
   else
-    gf_log_error '`hub` not available; this command requires `hub` to be installed'
+    gf_log_error '`gh` not available; this command requires `gh` to be installed'
     return 1
   fi
 }

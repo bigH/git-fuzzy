@@ -41,7 +41,7 @@ git_fuzzy_dir="$script_dir/.."
 . "$git_fuzzy_dir/lib/modules/status.sh"
 . "$git_fuzzy_dir/lib/modules/stash.sh"
 
-. "$git_fuzzy_dir/lib/modules/hub/pr.sh"
+. "$git_fuzzy_dir/lib/modules/gh/pr.sh"
 
 . "$git_fuzzy_dir/lib/modules/helpers.sh"
 # -----------------------------------------
@@ -74,15 +74,13 @@ fi
 
 # NB: checking for actually _unset_
 # shellcheck disable=2016
-if [ -z "${HUB_AVAILABLE+X}" ]; then
-  if type hub >/dev/null 2>&1; then
-    export HUB_AVAILABLE="YES"
-    export GIT_CMD="hub"
-    gf_log_debug '`hub` found, enabling GitHub support.'
+if [ -z "${GH_AVAILABLE+X}" ]; then
+  if type gh >/dev/null 2>&1; then
+    export GH_AVAILABLE="YES"
+    gf_log_debug '`gh` found, enabling GitHub support.'
   else
-    export HUB_AVAILABLE=""
-    export GIT_CMD="git"
-    gf_log_debug '`hub` not found, disabling GitHub support.'
+    export GH_AVAILABLE=""
+    gf_log_debug '`gh` not found, disabling GitHub support.'
   fi
 fi
 

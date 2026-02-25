@@ -16,7 +16,7 @@ gf_menu_content() {
   echo
   gf_menu_item 'diff' 'compare up to two branches (remote or local)'
 
-  if [ -n "$HUB_AVAILABLE" ]; then
+  if [ -n "$GH_AVAILABLE" ]; then
     echo
     echo "header ${YELLOW}-- 🚧 ${CYAN}${BOLD}GitHub${NORMAL}${YELLOW} 🚧 --${NORMAL}"
     echo
