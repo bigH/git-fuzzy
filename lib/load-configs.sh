@@ -60,8 +60,8 @@ if [ -z "$GF_DIFF_SEARCH_DEFAULTS" ]; then
   export GF_DIFF_SEARCH_DEFAULTS="-G"
 fi
 
-if [ -z "$GF_HUB_PR_FORMAT" ]; then
-  export GF_HUB_PR_FORMAT='%pC%>(8)%I%Creset  %t%  l%n'
+if [ -z "$GF_GH_PR_FORMAT" ]; then
+  export GF_GH_PR_FORMAT='{{range .}}{{tablerow (printf "#%v" .number) .title (timeago .updatedAt)}}{{end}}'
 fi
 
 if [ -z "$GF_LOG_MENU_PARAMS" ]; then
