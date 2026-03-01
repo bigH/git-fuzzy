@@ -42,7 +42,9 @@ gf_helper_status_menu_content() {
 }
 
 gf_helper_status_add() {
-  gf_command_logged git add -- "$@"
+  local paths
+  paths=$(echo "$@" | sed 's/[^ ]* -> //g')
+  gf_command_logged git add -- $paths
 }
 
 gf_helper_status_amend() {
@@ -63,17 +65,21 @@ gf_helper_status_add_patch() {
 }
 
 gf_helper_status_reset() {
-  gf_command_logged git reset -- "$@"
+  local paths
+  paths=$(echo "$@" | sed 's/[^ ]* -> //g')
+  gf_command_logged git reset -- $paths
 }
 
 gf_helper_status_discard() {
   if [ "$#" = 0 ]; then
     gf_log_error 'tried to CHECKOUT in status with no file(s)'
   else
-    if git ls-files --error-unmatch "$1" > /dev/null 2>&1; then
-      gf_command_logged git checkout HEAD -- "$@"
+    local paths
+    paths=$(echo "$@" | sed 's/[^ ]* -> //g')
+    if git ls-files --error-unmatch "${paths%% *}" > /dev/null 2>&1; then
+      gf_command_logged git checkout HEAD -- $paths
     else
-      gf_command_logged rm -rf "$@"
+      gf_command_logged rm -rf $paths
     fi
   fi
 }
