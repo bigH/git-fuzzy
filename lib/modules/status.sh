@@ -46,15 +46,15 @@ gf_status_interpreter() {
   TAIL="$(echo "$CONTENT" | tail -n +2)"
 
   if [ "$(lowercase "$HEAD")" = "$(lowercase "$GIT_FUZZY_STATUS_EDIT_KEY")" ]; then
-    local selected_file=$(echo "$TAIL" | cut -c4- | join_lines_quoted)
+    local selected_file=$(echo "$TAIL" | cut -c4- | sed 's/.* -> //' | join_lines_quoted)
     eval "git fuzzy helper status_edit $selected_file"
   elif [ "$(lowercase "$HEAD")" = "$(lowercase "$GIT_FUZZY_STATUS_COMMIT_KEY")" ]; then
     eval "git fuzzy helper status_commit"
   elif [ "$(lowercase "$HEAD")" = "$(lowercase "$GIT_FUZZY_STATUS_ADD_PATCH_KEY")" ]; then
-    local selected_file=$(echo "$TAIL" | cut -c4- | join_lines_quoted)
+    local selected_file=$(echo "$TAIL" | cut -c4- | sed 's/.* -> //' | join_lines_quoted)
     eval "git fuzzy helper status_add_patch $selected_file"
   else
-    echo "$TAIL" | cut -c4-
+    echo "$TAIL" | cut -c4- | sed 's/.* -> //'
   fi
 }
 
