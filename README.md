@@ -88,6 +88,12 @@ Simply install and run `git fuzzy` and you can begin using the menu.
 
     Look for commits in `git log`. Typing in the search simply filters in the usual `fzf` style.
 
+- `git fuzzy show <commit> [-- <pathspec>...]`
+
+    Browse the files changed by a single commit. Root commits and merge commits are shown with `git show --first-parent`.
+
+    Example: `git fuzzy show HEAD -- README.md lib/modules`
+
 - `git fuzzy reflog` (or `git fuzzy` -> `reflog`)
 
     Look for entries in `git reflog`. Typing in the search simply filters in the usual `fzf` style.
@@ -159,7 +165,7 @@ For some repos, it can be useful to turn off the remote branch listing in `git f
 export GF_BRANCH_SKIP_REMOTE_BRANCHES="yes"
 ```
 
-You may want the diff search to behave differently in `git fuzzy diff` (this doesn't apply to `log` or any other command that uses `diff`). The query will be quoted by `fzf` and provided as the next argument. In the default case, that means `-G <query>`. _The default is `-G`._
+You may want patch search to behave differently in `git fuzzy diff`, `git fuzzy show`, and single-commit show from `git fuzzy log`. The query will be quoted by `fzf` and provided as the next argument. In the default case, that means `-G <query>`. _The default is `-G`._
 
 ```bash
 export GF_DIFF_SEARCH_DEFAULTS="--pickaxe-regex -S"

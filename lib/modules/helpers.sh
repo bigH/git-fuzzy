@@ -8,6 +8,7 @@
 . "$git_fuzzy_dir/lib/modules/helpers/diff-direct.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/log.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/reflog.sh"
+. "$git_fuzzy_dir/lib/modules/helpers/show.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/status.sh"
 . "$git_fuzzy_dir/lib/modules/helpers/stash.sh"
 

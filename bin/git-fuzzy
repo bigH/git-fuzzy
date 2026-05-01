@@ -38,6 +38,7 @@ git_fuzzy_dir="$script_dir/.."
 . "$git_fuzzy_dir/lib/modules/diff.sh"
 . "$git_fuzzy_dir/lib/modules/log.sh"
 . "$git_fuzzy_dir/lib/modules/reflog.sh"
+. "$git_fuzzy_dir/lib/modules/show.sh"
 . "$git_fuzzy_dir/lib/modules/status.sh"
 . "$git_fuzzy_dir/lib/modules/stash.sh"
 
