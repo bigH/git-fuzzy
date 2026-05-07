@@ -23,11 +23,13 @@ GF_DIFF_PREVIEW='
 
 gf_fzf_diff_select() {
   gf_fzf -m 2 \
+    --track \
+    --id-nth=1,2 \
     --with-nth=2.. \
     --header "$GF_DIFF_HEADER" \
     --preview "$GF_DIFF_PREVIEW" \
-    --bind 'click-header:reload(git fuzzy helper diff_menu_content)' \
-    --bind 'backward-eof:reload(git fuzzy helper diff_menu_content)' \
+    --bind 'click-header:reload-sync(git fuzzy helper diff_menu_content)' \
+    --bind 'backward-eof:reload-sync(git fuzzy helper diff_menu_content)' \
     --bind "$(lowercase "$GIT_FUZZY_INSPECT_KEY")"':execute([ {1} != "nothing" ] && git fuzzy helper diff_inspect {2})' \
     --bind 'enter:execute([ {1} != "nothing" ] && git fuzzy helper diff_select {+2})'
 }

@@ -7,19 +7,19 @@ GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY="${GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY:-Alt-F}
 GIT_FUZZY_BRANCH_CHECKOUT_KEY="${GIT_FUZZY_BRANCH_CHECKOUT_KEY:-Alt-B}"
 GIT_FUZZY_BRANCH_DELETE_BRANCH_KEY="${GIT_FUZZY_BRANCH_DELETE_BRANCH_KEY:-Alt-D}"
 
-GF_BRANCH_RELOAD="reload(git fuzzy helper branch_menu_content)"
+GF_BRANCH_RELOAD="reload-sync(git fuzzy helper branch_menu_content)"
 
 GF_BRANCH_CHECKOUT="git fuzzy helper branch_checkout {1}"
 
 GF_BRANCH_ATTEMPT_DELETE="git fuzzy helper branch_delete {1}"
-GF_BRANCH_DELETE_BINDING="execute-silent($GF_BRANCH_ATTEMPT_DELETE)+$GF_BRANCH_RELOAD"
+GF_BRANCH_DELETE_BINDING="execute-silent($GF_BRANCH_ATTEMPT_DELETE)+$GF_BRANCH_RELOAD+clear-multi"
 
 gf_fzf_branch() {
 BRANCH_HEADER='
 Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
 Select an entry with '"${WHITE}<Tab>${NORMAL}"' to use as basis for comparison in the preview.
 '
-  BRANCH_CHECKOUT_BINDING="$(lowercase "$GIT_FUZZY_BRANCH_CHECKOUT_KEY"):execute-silent($GF_BRANCH_CHECKOUT)+$GF_BRANCH_RELOAD"
+  BRANCH_CHECKOUT_BINDING="$(lowercase "$GIT_FUZZY_BRANCH_CHECKOUT_KEY"):execute-silent($GF_BRANCH_CHECKOUT)+$GF_BRANCH_RELOAD+clear-multi"
   BRANCH_HEADER_BRANCH_CHECKOUT="    ${GREEN}${BOLD}checkout ${YELLOW}${BOLD}${NORMAL}  ${WHITE}${GIT_FUZZY_BRANCH_CHECKOUT_KEY}${NORMAL}"
   BRANCH_HEADER_FILE_CHECKOUT="    ${GREEN}${BOLD}checkout ${YELLOW}${BOLD}📁${NORMAL} ${WHITE}${GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY}${NORMAL}"
   if [ -n "$(git status --short)" ]; then
@@ -44,9 +44,11 @@ fi
 
   # shellcheck disable=2046,2016,2090,2086
   gf_fzf_one -m \
+             --track \
+             --id-nth=1 \
              --header "$BRANCH_HEADER" \
-             --bind 'click-header:reload(git fuzzy helper branch_menu_content)' \
-             --bind 'backward-eof:reload(git fuzzy helper branch_menu_content)' \
+             --bind 'click-header:reload-sync(git fuzzy helper branch_menu_content)' \
+             --bind 'backward-eof:reload-sync(git fuzzy helper branch_menu_content)' \
              --bind "$BRANCH_CHECKOUT_BINDING" \
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_CHECKOUT_FILE_KEY")"':execute(git fuzzy helper branch_checkout_files {1})' \
              --bind "$(lowercase "$GIT_FUZZY_BRANCH_DELETE_BRANCH_KEY"):$GF_BRANCH_DELETE_BINDING" \

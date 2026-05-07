@@ -20,15 +20,19 @@ fi
 
 gf_fzf_stash() {
   gf_fzf_one -m \
+    --track \
+    --id-nth=1 \
+    --with-nth=2.. \
+    --accept-nth=2.. \
     --header-lines=2 \
     --header "$GF_STASH_HEADER" \
-    --preview 'git fuzzy helper stash_preview_content {1}' \
-    --bind 'click-header:reload(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
-    --bind 'backward-eof:reload(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
-    --bind "$(lowercase "$GIT_FUZZY_DROP_KEY"):execute(git fuzzy helper stash_drop {1})+reload(git fuzzy helper stash_menu_content)" \
-    --bind "$(lowercase "$GIT_FUZZY_POP_KEY"):execute(git fuzzy helper stash_pop {1})+reload(git fuzzy helper stash_menu_content)" \
-    --bind "$(lowercase "$GIT_FUZZY_APPLY_KEY"):execute(git fuzzy helper stash_apply {1})+reload(git fuzzy helper stash_menu_content)" \
-    --bind "$(gf_inspect_binding stash_inspect '{1}')"
+    --preview 'git fuzzy helper stash_preview_content {2}' \
+    --bind 'click-header:reload-sync(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
+    --bind 'backward-eof:reload-sync(git fuzzy helper stash_menu_content '"$(quote_params "$@")"')' \
+    --bind "$(lowercase "$GIT_FUZZY_DROP_KEY"):execute(git fuzzy helper stash_drop {2})+reload-sync(git fuzzy helper stash_menu_content)+clear-multi" \
+    --bind "$(lowercase "$GIT_FUZZY_POP_KEY"):execute(git fuzzy helper stash_pop {2})+reload-sync(git fuzzy helper stash_menu_content)+clear-multi" \
+    --bind "$(lowercase "$GIT_FUZZY_APPLY_KEY"):execute(git fuzzy helper stash_apply {2})+reload-sync(git fuzzy helper stash_menu_content)+clear-multi" \
+    --bind "$(gf_inspect_binding stash_inspect '{2}')"
 }
 
 gf_stash() {

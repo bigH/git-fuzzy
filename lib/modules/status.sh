@@ -26,11 +26,14 @@ if [ "$(particularly_small_screen)" = '1' ]; then
 fi
 
 gf_fzf_status() {
-  local passive_reload='execute-silent(git fuzzy helper status_reload_preserving_selection $FZF_PORT {+})'
+  local passive_reload='reload-sync(git fuzzy helper status_menu_content)'
   local reload_sync="reload-sync(git fuzzy helper status_menu_content)"
+  local action_reload="$reload_sync+clear-multi"
 
-  gf_fzf -m --header "$GF_STATUS_HEADER" \
+  gf_fzf --multi --header "$GF_STATUS_HEADER" \
             --listen \
+            --track \
+            --id-nth=2.. \
             --header-lines=2 \
             --expect="$(lowercase "$GIT_FUZZY_STATUS_EDIT_KEY"),$(lowercase "$GIT_FUZZY_STATUS_COMMIT_KEY"),$(lowercase "$GIT_FUZZY_STATUS_ADD_PATCH_KEY")" \
             --nth=2 \
@@ -39,10 +42,10 @@ gf_fzf_status() {
             --bind "click-header:$passive_reload" \
             --bind "backward-eof:$passive_reload" \
             --bind "$(gf_inspect_binding status_diff '{1}' '{2}' '{4}')" \
-            --bind "$(lowercase "$GIT_FUZZY_STATUS_AMEND_KEY"):execute-silent(git fuzzy helper status_amend {+2..})+$reload_sync+down" \
-            --bind "$(lowercase "$GIT_FUZZY_STATUS_ADD_KEY"):execute-silent(git fuzzy helper status_add {+2..})+$reload_sync+down" \
-            --bind "$(lowercase "$GIT_FUZZY_STATUS_RESET_KEY"):execute-silent(git fuzzy helper status_reset {+2..})+$reload_sync+down" \
-            --bind "$(lowercase "$GIT_FUZZY_STATUS_DISCARD_KEY"):execute-silent(git fuzzy helper status_discard {+2..})+$reload_sync"
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_AMEND_KEY"):execute-silent(git fuzzy helper status_amend {+2..})+$action_reload+down" \
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_ADD_KEY"):execute-silent(git fuzzy helper status_add {+2..})+$action_reload+down" \
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_RESET_KEY"):execute-silent(git fuzzy helper status_reset {+2..})+$action_reload+down" \
+            --bind "$(lowercase "$GIT_FUZZY_STATUS_DISCARD_KEY"):execute-silent(git fuzzy helper status_discard {+2..})+$action_reload"
 }
 
 gf_status_interpreter() {

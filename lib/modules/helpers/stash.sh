@@ -2,7 +2,7 @@
 
 gf_helper_stash_menu_content() {
   printf "%s%s%s%s%s%s%s\n\n" "$GRAY" "$BOLD" '$ ' "$CYAN" "$BOLD" "git stash list" "$NORMAL"
-  git stash list
+  git stash list --format='%H %gd: %gs'
 }
 
 gf_helper_stash_preview_content() {

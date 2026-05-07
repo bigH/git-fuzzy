@@ -29,12 +29,14 @@ gf_fzf_log() {
   # shellcheck disable=2016
   gf_fzf_one -m \
     --phony \
+    --track \
+    --id-nth=1 \
     --header-lines=2 \
     --header "$GF_LOG_HEADER" \
     --preview 'git fuzzy helper log_preview_content {..} {q} {+..}' \
-    --bind "click-header:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
-    --bind "backward-eof:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
-    --bind "change:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "click-header:reload-sync(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "backward-eof:reload-sync(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "change:reload-sync(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_COMMIT_KEY"):execute(git fuzzy helper log_open_diff commit {..})" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_WORKING_COPY_KEY"):execute(git fuzzy helper log_open_diff working_copy {..})" \
     --bind "$(lowercase "$GIT_FUZZY_MERGE_BASE_KEY")"':execute(git fuzzy helper log_open_diff merge_base {..})' \

@@ -18,14 +18,16 @@ gf_fzf_show() {
   PREVIEW_COMMAND="git fuzzy helper show_preview_content {q} {} $PARAMETERS_QUOTED"
 
   gf_fzf -m --phony \
+    --track \
+    --id-nth=2.. \
     --with-nth=2.. \
     --header-lines=2 \
     --header "$GF_SHOW_HEADER" \
     --preview "$PREVIEW_COMMAND" \
-    --bind "click-header:reload(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "backward-eof:reload(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "click-header:reload-sync(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "backward-eof:reload-sync(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "$(gf_inspect_binding show_inspect '{q}' '{}' "$PARAMETERS_QUOTED")" \
-    --bind "change:reload($RELOAD_COMMAND)"
+    --bind "change:reload-sync($RELOAD_COMMAND)"
 }
 
 gf_show() {

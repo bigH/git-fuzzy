@@ -67,7 +67,7 @@ if ! type fzf >/dev/null 2>&1; then
 fi
 
 FZF_VERSION="$(fzf --version)"
-MIN_FZF_VERSION="0.46.0"
+MIN_FZF_VERSION="0.71.0"
 if [ "$MIN_FZF_VERSION" != "$(printf '%s\n%s\n' "${FZF_VERSION%% *}" "$MIN_FZF_VERSION" | sort -V | head -n1)" ]; then
   # shellcheck disable=2016
   # shellcheck disable=2016

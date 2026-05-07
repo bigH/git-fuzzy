@@ -90,161 +90,12 @@ gf_helper_status_valid_port() {
   esac
 }
 
-gf_helper_status_runtime_dir() {
-  local temp_dir="${TMPDIR:-/tmp}"
-  local user_id="${UID:-$(id -u)}"
-  local runtime_dir="${temp_dir%/}/git-fuzzy-$user_id"
-
-  mkdir -p "$runtime_dir" || return
-  chmod 700 "$runtime_dir" || return
-  printf '%s' "$runtime_dir"
-}
-
 gf_helper_status_fzf_post() {
   local port="$1"
   local action="$2"
 
   gf_helper_status_valid_port "$port" || return
   curl -fsS -XPOST "localhost:$port" --data-binary "$action" > /dev/null 2>&1
-}
-
-gf_helper_status_reload_token_path() {
-  local port="$1"
-  local runtime_dir
-
-  runtime_dir="$(gf_helper_status_runtime_dir)" || return
-
-  printf '%s/status-reload-%s' "$runtime_dir" "$port"
-}
-
-gf_helper_status_reload_is_current() {
-  local token_path="$1"
-  local token="$2"
-
-  [ -f "$token_path" ] && [ "$(cat "$token_path")" = "$token" ]
-}
-
-gf_helper_status_fzf_action() {
-  local action="$1"
-  shift
-  local argument="$1"
-  local delimiter
-
-  for delimiter in '~' '!' '@' '#' '%' '^' '&' '*' ';' '/' '|'; do
-    case "$argument" in
-      *"$delimiter"*)
-        ;;
-      *)
-        printf '%s%s%s%s' "$action" "$delimiter" "$argument" "$delimiter"
-        return
-        ;;
-    esac
-  done
-
-  return 1
-}
-
-gf_helper_status_item_subject() {
-  local item="$1"
-
-  case "$item" in
-    ??\ *)
-      printf '%s' "${item:3}"
-      ;;
-    *)
-      printf '%s' "$item"
-      ;;
-  esac
-}
-
-gf_helper_status_item_path() {
-  gf_helper_status_item_subject "$1" | sed 's/.* -> //'
-}
-
-gf_helper_status_item_position() {
-  local path="$1"
-  local item
-  local position=1
-
-  while IFS= read -r item; do
-    if [ "$(gf_helper_status_item_path "$item")" = "$path" ]; then
-      printf '%s' "$position"
-      return
-    fi
-    position=$((position + 1))
-  done <<EOF
-$(git status --short)
-EOF
-
-  return 1
-}
-
-gf_helper_status_reload_preserving_selection() {
-  local port="$1"
-  shift
-
-  if ! gf_helper_status_valid_port "$port"; then
-    return
-  fi
-
-  local selected_count="${FZF_SELECT_COUNT:-0}"
-  case "$selected_count" in
-    ''|*[!0-9]*)
-      selected_count=0
-      ;;
-  esac
-
-  local reselect_delay="${GF_STATUS_RESELECT_DELAY:-0.2}"
-  local token_path
-  local token
-
-  token_path="$(gf_helper_status_reload_token_path "$port")"
-  token="$$-${RANDOM:-0}-$(date +%s)"
-  printf '%s' "$token" > "$token_path" || return
-
-  if [ "$selected_count" -eq 0 ]; then
-    {
-      sleep "$reselect_delay"
-      gf_helper_status_reload_is_current "$token_path" "$token" || exit
-      gf_helper_status_fzf_post "$port" 'track-current+reload-sync(git fuzzy helper status_menu_content)'
-      gf_helper_status_reload_is_current "$token_path" "$token" && rm -f "$token_path"
-    } > /dev/null 2>&1 &
-    return
-  fi
-
-  local selected_items=("$@")
-  local query="${FZF_QUERY:-}"
-  local search_action
-
-  {
-    sleep "$reselect_delay"
-    gf_helper_status_reload_is_current "$token_path" "$token" || exit
-    gf_helper_status_fzf_post "$port" 'reload-sync(git fuzzy helper status_menu_content)' || exit
-    sleep "$reselect_delay"
-
-    gf_helper_status_reload_is_current "$token_path" "$token" || exit
-    gf_helper_status_fzf_post "$port" 'clear-query' || exit
-
-    local item
-    local path
-    local position
-    for item in "${selected_items[@]}"; do
-      path="$(gf_helper_status_item_path "$item")"
-      if position="$(gf_helper_status_item_position "$path")"; then
-        gf_helper_status_reload_is_current "$token_path" "$token" || exit
-        gf_helper_status_fzf_post "$port" "pos($position)+select" || exit
-        sleep "$reselect_delay"
-      fi
-    done
-
-    gf_helper_status_reload_is_current "$token_path" "$token" || exit
-    if [ -n "$query" ] && search_action="$(gf_helper_status_fzf_action change-query "$query")"; then
-      gf_helper_status_fzf_post "$port" "$search_action"
-    else
-      gf_helper_status_fzf_post "$port" 'clear-query'
-    fi
-    gf_helper_status_reload_is_current "$token_path" "$token" && rm -f "$token_path"
-  } > /dev/null 2>&1 &
 }
 
 gf_helper_status_add() {
@@ -319,7 +170,7 @@ gf_helper_status_watch() {
     return
   fi
 
-  local reload_action="execute-silent(git fuzzy helper status_reload_preserving_selection $port {+})"
+  local reload_action="reload-sync(git fuzzy helper status_menu_content)"
 
   # Self-terminates when fzf exits: curl fails → break → pipe closes → SIGPIPE kills watcher
   if type fswatch > /dev/null 2>&1; then

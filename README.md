@@ -1,6 +1,6 @@
 # `git-fuzzy`
 
-A CLI interface to git that relies heavily on [`fzf`](https://github.com/junegunn/fzf) (version `0.46.0` or higher).
+A CLI interface to git that relies heavily on [`fzf`](https://github.com/junegunn/fzf) (version `0.71.0` or higher).
 
 You can run `git add` and `git reset` by selecting or cursoring. You can commit interactively.
 
@@ -242,7 +242,7 @@ export GF_VERTICAL_SMALL_SCREEN_CALCULATION='__HEIGHT__ <= 60'
 
 ### Auto-Reload
 
-`git fuzzy status` automatically reloads when files in the working tree change. This uses fzf's `--listen` feature with a background file watcher (`fswatch` on macOS, `inotifywait` on Linux). Events are debounced to avoid excessive reloads during rapid changes.
+`git fuzzy status` automatically reloads when files in the working tree change. This uses fzf's `--listen`, `--track`, and `--id-nth` features with a background file watcher (`fswatch` on macOS, `inotifywait` on Linux). Events are debounced to avoid excessive reloads during rapid changes, and selected status items are preserved across passive reloads by their displayed status subject.
 
 ```bash
 # seconds to batch filesystem events before reloading (default: 0.5)
