@@ -22,14 +22,13 @@ gf_fzf_diff_checkout() {
   PREVIEW_COMMAND="git fuzzy helper diff_direct_preview_content {q} {} $BRANCH_QUOTED"
 
   gf_fzf -m --phony \
-    --track \
     --id-nth=.. \
     --header-lines=2 \
     --header "$GF_DIFF_CHECKOUT_HEADER" \
     --preview "$PREVIEW_COMMAND" \
-    --bind "click-header:reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "backward-eof:reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "change:reload-sync($RELOAD_COMMAND)" \
+    --bind "click-header:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "backward-eof:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "change:reload($RELOAD_COMMAND)" \
     --bind "$(gf_inspect_binding diff_direct_inspect '{q}' '{}' "$BRANCH_QUOTED")" \
     --bind "enter:execute-silent(git fuzzy helper diff_checkout_file $BRANCH_QUOTED {+})+down"
 }

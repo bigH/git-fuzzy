@@ -18,15 +18,14 @@ gf_fzf_diff_direct() {
   PREVIEW_COMMAND="git fuzzy helper diff_direct_preview_content {q} {} $PARAMETERS_QUOTED"
 
   gf_fzf -m --phony \
-    --track \
     --id-nth=.. \
     --header-lines=2 \
     --header "$GF_DIFF_DIRECT_HEADER" \
     --preview "$PREVIEW_COMMAND" \
-    --bind "click-header:reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "backward-eof:reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "click-header:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "backward-eof:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "$(gf_inspect_binding diff_direct_inspect '{q}' '{}' "$PARAMETERS_QUOTED")" \
-    --bind "change:reload-sync($RELOAD_COMMAND)"
+    --bind "change:reload($RELOAD_COMMAND)"
 }
 
 gf_diff_direct() {
