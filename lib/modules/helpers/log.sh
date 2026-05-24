@@ -38,6 +38,65 @@ gf_helper_log_menu_content() {
   fi
 }
 
+gf_helper_log_valid_port() {
+  case "$1" in
+    ''|*[!0-9]*)
+      return 1
+      ;;
+  esac
+}
+
+gf_helper_log_reload_token_path() {
+  local port="$1"
+  local temp_dir="${TMPDIR:-/tmp}"
+  local user_id="${UID:-$(id -u)}"
+  local runtime_dir="${temp_dir%/}/git-fuzzy-$user_id"
+
+  mkdir -p "$runtime_dir" || return
+  chmod 700 "$runtime_dir" || return
+  printf '%s/log-reload-%s' "$runtime_dir" "$port"
+}
+
+gf_helper_log_reload_is_current() {
+  local token_path="$1"
+  local token="$2"
+
+  [ -f "$token_path" ] && [ "$(cat "$token_path")" = "$token" ]
+}
+
+gf_helper_log_fzf_post() {
+  local port="$1"
+  local action="$2"
+
+  gf_helper_log_valid_port "$port" || return
+  curl -fsS -XPOST "localhost:$port" --data-binary "$action" > /dev/null 2>&1
+}
+
+gf_helper_log_debounced_reload() {
+  local port="$1"
+  local debounce="$2"
+  local query="$3"
+  shift 3
+
+  gf_helper_log_valid_port "$port" || return
+
+  local token_path
+  local token
+  local action
+
+  token_path="$(gf_helper_log_reload_token_path "$port")" || return
+  token="$$-${RANDOM:-0}-$(date +%s)"
+  printf '%s' "$token" > "$token_path" || return
+
+  sleep "$debounce" || return
+  gf_helper_log_reload_is_current "$token_path" "$token" || return
+
+  action="track-current+reload-sync(git fuzzy helper log_menu_content $(quote_params "$query" "$@"))"
+  gf_helper_log_fzf_post "$port" "$action" || return
+
+  gf_helper_log_reload_is_current "$token_path" "$token" && rm -f "$token_path"
+}
+
 gf_helper_log_preview_content() {
   if [ -z "$1" ]; then
     gf_preview_shortcuts_header

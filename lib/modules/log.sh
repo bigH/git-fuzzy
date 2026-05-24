@@ -3,6 +3,7 @@
 GIT_FUZZY_LOG_WORKING_COPY_KEY="${GIT_FUZZY_LOG_WORKING_COPY_KEY:-Ctrl-P}"
 GIT_FUZZY_MERGE_BASE_KEY="${GIT_FUZZY_MERGE_BASE_KEY:-Alt-P}"
 GIT_FUZZY_LOG_COMMIT_KEY="${GIT_FUZZY_LOG_COMMIT_KEY:-Alt-D}"
+GF_LOG_RELOAD_DEBOUNCE="${GF_LOG_RELOAD_DEBOUNCE:-0.15}"
 
 # shellcheck disable=2016
 GF_LOG_HEADER='
@@ -25,17 +26,20 @@ gf_fzf_log() {
   if [ "$#" -gt 0 ]; then
     PARAMS_FOR_SUBSTITUTION="$(quote_params "$@")"
   fi
+  LOG_RELOAD_DEBOUNCE="$(quote_params "$GF_LOG_RELOAD_DEBOUNCE")"
 
   # shellcheck disable=2016
   gf_fzf_one -m \
     --phony \
+    --listen \
+    --track \
     --id-nth=1 \
     --header-lines=2 \
     --header "$GF_LOG_HEADER" \
     --preview 'git fuzzy helper log_preview_content {..} {q} {+..}' \
     --bind "click-header:track-current+reload-sync(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "backward-eof:track-current+reload-sync(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
-    --bind "change:reload(git fuzzy helper log_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "change:execute-silent(git fuzzy helper log_debounced_reload \$FZF_PORT $LOG_RELOAD_DEBOUNCE {q} $PARAMS_FOR_SUBSTITUTION >/dev/null 2>&1 &)" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_COMMIT_KEY"):execute(git fuzzy helper log_open_diff commit {..})" \
     --bind "$(lowercase "$GIT_FUZZY_LOG_WORKING_COPY_KEY"):execute(git fuzzy helper log_open_diff working_copy {..})" \
     --bind "$(lowercase "$GIT_FUZZY_MERGE_BASE_KEY")"':execute(git fuzzy helper log_open_diff merge_base {..})' \
