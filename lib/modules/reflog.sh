@@ -24,15 +24,18 @@ gf_fzf_reflog() {
   if [ "$#" -gt 0 ]; then
     PARAMS_FOR_SUBSTITUTION="$(quote_params "$@")"
   fi
+  RELOAD_DEBOUNCE="$(quote_params "$GF_RELOAD_DEBOUNCE")"
 
   # shellcheck disable=2016
   gf_fzf_one -m \
     --phony \
+    --listen \
+    --track \
     --id-nth=1,3.. \
     --header-lines=2 \
     --header "$GF_REFLOG_HEADER" \
     --preview 'git fuzzy helper reflog_preview_content {1} {q} {+..}' \
-    --bind "change:reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload-sync reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION >/dev/null 2>&1 &)" \
     --bind "click-header:track-current+reload-sync(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "backward-eof:track-current+reload-sync(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "$(lowercase "$GIT_FUZZY_REFLOG_COMMIT_KEY"):execute(git fuzzy diff {1}^ {1})" \

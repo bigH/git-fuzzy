@@ -85,3 +85,7 @@ if [ -r "./.git-fuzzy-config" ]; then
   # shellcheck disable=1091
   . "./.git-fuzzy-config"
 fi
+
+if [ -z "$GF_RELOAD_DEBOUNCE" ]; then
+  export GF_RELOAD_DEBOUNCE="0.15"
+fi

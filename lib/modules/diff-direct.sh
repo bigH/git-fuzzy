@@ -12,12 +12,14 @@ fi
 
 gf_fzf_diff_direct() {
   PARAMETERS_QUOTED="$(quote_params "$@")"
+  RELOAD_DEBOUNCE="$(quote_params "$GF_RELOAD_DEBOUNCE")"
 
   # shellcheck disable=2016
-  RELOAD_COMMAND="git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED"
   PREVIEW_COMMAND="git fuzzy helper diff_direct_preview_content {q} {} $PARAMETERS_QUOTED"
 
   gf_fzf -m --phony \
+    --listen \
+    --track \
     --id-nth=.. \
     --header-lines=2 \
     --header "$GF_DIFF_DIRECT_HEADER" \
@@ -25,7 +27,7 @@ gf_fzf_diff_direct() {
     --bind "click-header:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "backward-eof:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "$(gf_inspect_binding diff_direct_inspect '{q}' '{}' "$PARAMETERS_QUOTED")" \
-    --bind "change:reload($RELOAD_COMMAND)"
+    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload-sync diff_direct_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)"
 }
 
 gf_diff_direct() {

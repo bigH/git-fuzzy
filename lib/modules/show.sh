@@ -12,12 +12,14 @@ fi
 
 gf_fzf_show() {
   PARAMETERS_QUOTED="$(quote_params "$@")"
+  RELOAD_DEBOUNCE="$(quote_params "$GF_RELOAD_DEBOUNCE")"
 
   # shellcheck disable=2016
-  RELOAD_COMMAND="git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED"
   PREVIEW_COMMAND="git fuzzy helper show_preview_content {q} {} $PARAMETERS_QUOTED"
 
   gf_fzf -m --phony \
+    --listen \
+    --track \
     --id-nth=2.. \
     --with-nth=2.. \
     --header-lines=2 \
@@ -26,7 +28,7 @@ gf_fzf_show() {
     --bind "click-header:track-current+reload-sync(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "backward-eof:track-current+reload-sync(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "$(gf_inspect_binding show_inspect '{q}' '{}' "$PARAMETERS_QUOTED")" \
-    --bind "change:reload($RELOAD_COMMAND)"
+    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload-sync show_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)"
 }
 
 gf_show() {
