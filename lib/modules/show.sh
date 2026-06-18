@@ -6,11 +6,11 @@ GF_SHOW_HEADER='
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_SHOW_HEADER=''
-fi
-
 gf_fzf_show() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_SHOW_HEADER=''
+  fi
+
   PARAMETERS_QUOTED="$(quote_params "$@")"
   RELOAD_DEBOUNCE="$(quote_params "$GF_RELOAD_DEBOUNCE")"
 

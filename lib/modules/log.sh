@@ -16,11 +16,11 @@ GF_LOG_HEADER='
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_LOG_HEADER=''
-fi
-
 gf_fzf_log() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_LOG_HEADER=''
+  fi
+
   PARAMS_FOR_SUBSTITUTION=''
   if [ "$#" -gt 0 ]; then
     PARAMS_FOR_SUBSTITUTION="$(quote_params "$@")"

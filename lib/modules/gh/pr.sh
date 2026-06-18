@@ -8,11 +8,11 @@ GF_PR_HEADER='
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_PR_HEADER=''
-fi
-
 gf_fzf_pr_select() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_PR_HEADER=''
+  fi
+
   gf_fzf -m 2 \
     --header="$GF_PR_HEADER" \
     --header-lines 2 \

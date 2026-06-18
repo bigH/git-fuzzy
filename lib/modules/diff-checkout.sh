@@ -9,11 +9,11 @@ GF_DIFF_CHECKOUT_HEADER='
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_DIFF_CHECKOUT_HEADER=''
-fi
-
 gf_fzf_diff_checkout() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_DIFF_CHECKOUT_HEADER=''
+  fi
+
   BRANCH_QUOTED="$(quote_params "$1")"
   PARAMETERS_QUOTED="$(quote_params "$1" "$2")"
   RELOAD_DEBOUNCE="$(quote_params "$GF_RELOAD_DEBOUNCE")"

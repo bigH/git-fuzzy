@@ -8,10 +8,6 @@ Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}."'
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_DIFF_HEADER=''
-fi
-
 GF_DIFF_PREVIEW='
   [ {1} != "nothing" ] &&
     git fuzzy helper diff_preview_content {2} ||
@@ -22,6 +18,10 @@ GF_DIFF_PREVIEW='
 '
 
 gf_fzf_diff_select() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_DIFF_HEADER=''
+  fi
+
   gf_fzf -m 2 \
     --track \
     --id-nth=1,2 \

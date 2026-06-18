@@ -21,11 +21,11 @@ Type to filter. '"${WHITE}Enter${NORMAL} to ${GREEN}ACCEPT${NORMAL}"'
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_STATUS_HEADER=''
-fi
-
 gf_fzf_status() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_STATUS_HEADER=''
+  fi
+
   local passive_reload='reload-sync(git fuzzy helper status_menu_content)'
   local reload_sync="reload-sync(git fuzzy helper status_menu_content)"
   local action_reload="$reload_sync+clear-multi"

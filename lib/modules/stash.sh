@@ -14,11 +14,11 @@ GF_STASH_HEADER='
 
 '
 
-if [ "$(particularly_small_screen)" = '1' ]; then
-  GF_STASH_HEADER=''
-fi
-
 gf_fzf_stash() {
+  if [ "$(particularly_small_screen)" = '1' ]; then
+    GF_STASH_HEADER=''
+  fi
+
   gf_fzf_one -m \
     --track \
     --id-nth=1 \

@@ -57,21 +57,32 @@ define max(a, b) { if (a > b) return a else return b }
 WIDTH="$(tput cols)"
 HEIGHT="$(tput lines)"
 
+# Memoized geometry: WIDTH/HEIGHT are fixed at source time, so these pure
+# functions are computed once per process (empty = not-yet-computed).
+__GF_IS_VERTICAL=""
+__GF_SMALL_SCREEN=""
+
 run_bc_program() {
   WIDTH_SUBSTITUTED="${1//__WIDTH__/$WIDTH}"
   echo "${GF_BC_STL} ${GF_BC_LIB} ${WIDTH_SUBSTITUTED//__HEIGHT__/$HEIGHT}" | bc -l
 }
 
 is_vertical() {
-  run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD"
+  if [ -z "$__GF_IS_VERTICAL" ]; then
+    __GF_IS_VERTICAL="$(run_bc_program "__WIDTH__ / __HEIGHT__ < $GF_VERTICAL_THRESHOLD")"
+  fi
+  printf '%s' "$__GF_IS_VERTICAL"
 }
 
 particularly_small_screen() {
-  if [ "$(is_vertical)" = '1' ]; then
-    run_bc_program "$GF_VERTICAL_SMALL_SCREEN_CALCULATION"
-  else
-    run_bc_program "$GF_HORIZONTAL_SMALL_SCREEN_CALCULATION"
+  if [ -z "$__GF_SMALL_SCREEN" ]; then
+    if [ "$(is_vertical)" = '1' ]; then
+      __GF_SMALL_SCREEN="$(run_bc_program "$GF_VERTICAL_SMALL_SCREEN_CALCULATION")"
+    else
+      __GF_SMALL_SCREEN="$(run_bc_program "$GF_HORIZONTAL_SMALL_SCREEN_CALCULATION")"
+    fi
   fi
+  printf '%s' "$__GF_SMALL_SCREEN"
 }
 
 preview_window_size_and_direction() {
