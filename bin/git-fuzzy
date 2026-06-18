@@ -17,34 +17,67 @@ done
 
 script_dir="$( cd -P "$( dirname "$script_source" )" >/dev/null 2>&1 && pwd )"
 
-# NB: all sourcing happens here.
+# NB: dispatch-aware sourcing. Always source CORE (cheap), then only the module(s)
+# the dispatched subcommand needs. Keeps the per-keystroke helper path lean.
 # -----------------------------------------
 git_fuzzy_dir="$script_dir/.."
 
+# -- CORE (order is load-bearing: load-configs -> utils -> debug -> core) --
 . "$git_fuzzy_dir/lib/load-configs.sh"
-
-. "$git_fuzzy_dir/lib/snapshot.sh"
-
 . "$git_fuzzy_dir/lib/utils.sh"
-
 . "$git_fuzzy_dir/lib/debug.sh"
 . "$git_fuzzy_dir/lib/core.sh"
 
-. "$git_fuzzy_dir/lib/modules/main.sh"
+source_lib() { . "$git_fuzzy_dir/lib/$1"; }
 
-. "$git_fuzzy_dir/lib/modules/branch.sh"
-. "$git_fuzzy_dir/lib/modules/diff-checkout.sh"
-. "$git_fuzzy_dir/lib/modules/diff-direct.sh"
-. "$git_fuzzy_dir/lib/modules/diff.sh"
-. "$git_fuzzy_dir/lib/modules/log.sh"
-. "$git_fuzzy_dir/lib/modules/reflog.sh"
-. "$git_fuzzy_dir/lib/modules/show.sh"
-. "$git_fuzzy_dir/lib/modules/status.sh"
-. "$git_fuzzy_dir/lib/modules/stash.sh"
+# -- map a `helper <sub>` subcommand to its one extra file (core-resident -> none) --
+gf_source_helper() {
+  case "$1" in
+    preview_resize|preview_shortcuts_header|preview_shortcuts_header_with_inspect|\
+    inspect_pager|inspect_diff_renderer)  : ;;                          # live in core.sh
+    debounced_reload|valid_fzf_port|reload_token_path|reload_is_current|fzf_post)
+                                          source_lib modules/helpers/generic.sh ;;
+    branch_*)         source_lib modules/helpers/branch.sh ;;
+    diff_checkout_*)  source_lib modules/helpers/diff-checkout.sh ;;    # before diff_*
+    diff_direct_*)    source_lib modules/helpers/diff-direct.sh ;;      # before diff_*
+    diff_*)           source_lib modules/helpers/diff.sh ;;
+    log_*)            source_lib modules/helpers/log.sh ;;
+    reflog_*)         source_lib modules/helpers/reflog.sh ;;
+    show_*)           source_lib modules/helpers/show.sh ;;
+    status_*)         source_lib modules/helpers/status.sh ;;
+    stash_*)          source_lib modules/helpers/stash.sh ;;
+    pr_*)             source_lib modules/helpers/gh/pr.sh ;;
+    *)                : ;;                                              # unknown -> gf_run errors
+  esac
+}
 
-. "$git_fuzzy_dir/lib/modules/gh/pr.sh"
+# -- map a top-level command to its module + transitive deps (mirrors gf_run dispatch) --
+gf_source_for() {
+  if [ "$1" = 'helper' ]; then
+    gf_source_helper "$2"
+    return
+  fi
 
-. "$git_fuzzy_dir/lib/modules/helpers.sh"
+  local cmd="$1"
+  [ "$cmd" = 'interactive' ] && cmd="$2"   # peel interactive: command is the next arg
+
+  case "$cmd" in
+    ''|menu)          source_lib modules/main.sh ;;
+    branch)           source_lib snapshot.sh; source_lib modules/branch.sh ;;
+    diff)             source_lib modules/diff-direct.sh; source_lib modules/diff.sh ;;
+    diff_direct)      source_lib modules/diff-direct.sh ;;
+    diff_checkout)    source_lib snapshot.sh; source_lib modules/diff-checkout.sh ;;
+    log)              source_lib modules/helpers/generic.sh; source_lib modules/log.sh ;;
+    reflog)           source_lib modules/helpers/generic.sh; source_lib modules/reflog.sh ;;
+    show)             source_lib modules/helpers/show.sh; source_lib modules/show.sh ;;
+    status)           source_lib snapshot.sh; source_lib modules/status.sh ;;
+    stash)            source_lib modules/stash.sh ;;
+    pr)               source_lib modules/gh/pr.sh ;;
+    *)                : ;;                  # unknown -> gf_run emits "not found" using CORE only
+  esac
+}
+
+gf_source_for "$@"
 # -----------------------------------------
 
 # -- Invariants --
