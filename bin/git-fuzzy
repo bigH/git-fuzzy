@@ -80,43 +80,46 @@ gf_source_for() {
 gf_source_for "$@"
 # -----------------------------------------
 
-# -- Invariants --
+# -- Invariants (skipped for helper subprocesses: a live, already-validated parent
+# spawns them in-repo with GH_AVAILABLE exported, so re-checking is pure waste) --
 
-if ! type git >/dev/null 2>&1; then
+if [ "$1" != helper ]; then
+  if ! type git >/dev/null 2>&1; then
+    # shellcheck disable=2016
+    gf_log_error '`git` not found; it is required for `git fuzzy` to work.'
+    exit 1
+  fi
+
+  if ! gf_is_in_git_repo; then
+    gf_log_error "not in git repo"
+    exit 1
+  fi
+
+  if ! type fzf >/dev/null 2>&1; then
+    # shellcheck disable=2016
+    gf_log_error '`fzf` not found; it is required for `git fuzzy` to work.'
+    exit 1
+  fi
+
+  FZF_VERSION="$(fzf --version)"
+  MIN_FZF_VERSION="0.71.0"
+  if [ "$MIN_FZF_VERSION" != "$(printf '%s\n%s\n' "${FZF_VERSION%% *}" "$MIN_FZF_VERSION" | sort -V | head -n1)" ]; then
+    # shellcheck disable=2016
+    # shellcheck disable=2016
+    gf_log_error '`fzf` '"${MIN_FZF_VERSION}"' or newer is required'
+    exit 1
+  fi
+
+  # NB: checking for actually _unset_
   # shellcheck disable=2016
-  gf_log_error '`git` not found; it is required for `git fuzzy` to work.'
-  exit 1
-fi
-
-if ! gf_is_in_git_repo; then
-  gf_log_error "not in git repo"
-  exit 1
-fi
-
-if ! type fzf >/dev/null 2>&1; then
-  # shellcheck disable=2016
-  gf_log_error '`fzf` not found; it is required for `git fuzzy` to work.'
-  exit 1
-fi
-
-FZF_VERSION="$(fzf --version)"
-MIN_FZF_VERSION="0.71.0"
-if [ "$MIN_FZF_VERSION" != "$(printf '%s\n%s\n' "${FZF_VERSION%% *}" "$MIN_FZF_VERSION" | sort -V | head -n1)" ]; then
-  # shellcheck disable=2016
-  # shellcheck disable=2016
-  gf_log_error '`fzf` '"${MIN_FZF_VERSION}"' or newer is required'
-  exit 1
-fi
-
-# NB: checking for actually _unset_
-# shellcheck disable=2016
-if [ -z "${GH_AVAILABLE+X}" ]; then
-  if type gh >/dev/null 2>&1; then
-    export GH_AVAILABLE="YES"
-    gf_log_debug '`gh` found, enabling GitHub support.'
-  else
-    export GH_AVAILABLE=""
-    gf_log_debug '`gh` not found, disabling GitHub support.'
+  if [ -z "${GH_AVAILABLE+X}" ]; then
+    if type gh >/dev/null 2>&1; then
+      export GH_AVAILABLE="YES"
+      gf_log_debug '`gh` found, enabling GitHub support.'
+    else
+      export GH_AVAILABLE=""
+      gf_log_debug '`gh` not found, disabling GitHub support.'
+    fi
   fi
 fi
 
