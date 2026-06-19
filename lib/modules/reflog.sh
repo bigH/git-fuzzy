@@ -35,9 +35,9 @@ gf_fzf_reflog() {
     --header-lines=2 \
     --header "$GF_REFLOG_HEADER" \
     --preview 'git fuzzy helper reflog_preview_content {1} {q} {+..}' \
-    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload-sync reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION >/dev/null 2>&1 &)" \
-    --bind "click-header:track-current+reload-sync(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
-    --bind "backward-eof:track-current+reload-sync(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION >/dev/null 2>&1 &)" \
+    --bind "click-header:track-current+reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
+    --bind "backward-eof:track-current+reload(git fuzzy helper reflog_menu_content {q} $PARAMS_FOR_SUBSTITUTION)" \
     --bind "$(lowercase "$GIT_FUZZY_REFLOG_COMMIT_KEY"):execute(git fuzzy diff {1}^ {1})" \
     --bind "$(lowercase "$GIT_FUZZY_REFLOG_WORKING_COPY_KEY"):execute(git fuzzy diff {1})" \
     --bind "$(lowercase "$GIT_FUZZY_REFLOG_MERGE_BASE_KEY"):"'execute(git fuzzy diff "$(git merge-base "'"$GF_BASE_BRANCH"'" {1})" {1})' \

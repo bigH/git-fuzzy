@@ -25,10 +25,10 @@ gf_fzf_show() {
     --header-lines=2 \
     --header "$GF_SHOW_HEADER" \
     --preview "$PREVIEW_COMMAND" \
-    --bind "click-header:track-current+reload-sync(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "backward-eof:track-current+reload-sync(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "click-header:track-current+reload(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "backward-eof:track-current+reload(git fuzzy helper show_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "$(gf_inspect_binding show_inspect '{q}' '{}' "$PARAMETERS_QUOTED")" \
-    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload-sync show_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)"
+    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload show_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)"
 }
 
 gf_show() {

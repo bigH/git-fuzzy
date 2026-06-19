@@ -60,7 +60,7 @@ gf_helper_debounced_reload() {
   gf_helper_valid_fzf_port "$port" || return
 
   case "$action_prefix" in
-    reload-sync|track-current+reload-sync)
+    track-current+reload)
       ;;
     *)
       return 1

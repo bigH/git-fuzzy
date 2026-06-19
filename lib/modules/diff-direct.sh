@@ -24,10 +24,10 @@ gf_fzf_diff_direct() {
     --header-lines=2 \
     --header "$GF_DIFF_DIRECT_HEADER" \
     --preview "$PREVIEW_COMMAND" \
-    --bind "click-header:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "backward-eof:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "click-header:track-current+reload(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "backward-eof:track-current+reload(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
     --bind "$(gf_inspect_binding diff_direct_inspect '{q}' '{}' "$PARAMETERS_QUOTED")" \
-    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload-sync diff_direct_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)"
+    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload diff_direct_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)"
 }
 
 gf_diff_direct() {

@@ -28,9 +28,9 @@ gf_fzf_diff_checkout() {
     --header-lines=2 \
     --header "$GF_DIFF_CHECKOUT_HEADER" \
     --preview "$PREVIEW_COMMAND" \
-    --bind "click-header:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "backward-eof:track-current+reload-sync(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
-    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload-sync diff_direct_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)" \
+    --bind "click-header:track-current+reload(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "backward-eof:track-current+reload(git fuzzy helper diff_direct_menu_content {q} $PARAMETERS_QUOTED)" \
+    --bind "change:execute-silent(git fuzzy helper debounced_reload \$FZF_PORT $RELOAD_DEBOUNCE track-current+reload diff_direct_menu_content {q} $PARAMETERS_QUOTED >/dev/null 2>&1 &)" \
     --bind "$(gf_inspect_binding diff_direct_inspect '{q}' '{}' "$BRANCH_QUOTED")" \
     --bind "enter:execute-silent(git fuzzy helper diff_checkout_file $BRANCH_QUOTED {+})+down"
 }
